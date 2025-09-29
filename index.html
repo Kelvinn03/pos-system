@@ -8,6 +8,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+    <script>
+        // Redirect to login if not authenticated
+        const session = localStorage.getItem('posSession') || sessionStorage.getItem('posSession');
+        if (!session) {
+            window.location.href = 'login.html';
+        }
+    </script>
     <div class="container">
         <!-- Header -->
         <header class="header">
