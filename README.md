@@ -3,15 +3,20 @@
 ## 📚 Project Information
 **Course**: Front-End Programming  
 **Project Type**: Mid-Term Exam  
-**Student**: Kelvin  
-**Technologies**: HTML5, CSS3, JavaScript (ES6+)  
+**Student**: 
+535249102	Kelvin
+535240025	Shinichi Wijaya
+535240041	Faiz Abdurahman
+535240162	Eric Cantona
+535240166	Andronikus G. Pangabdi
+**Technologies**: HTML, CSS, JavaScript
 **Repository**: [https://github.com/Kelvinn03/pos-system](https://github.com/Kelvinn03/pos-system)
 
 ---
 
 ## 🎯 Project Overview
 
-This is a **Point of Sale (POS) System** developed as a mid-term exam project for the Front-End Programming course. The project demonstrates proficiency in modern web development technologies including HTML5, CSS3, and JavaScript ES6+.
+This is a **Point of Sale (POS) System** developed as a mid-term exam project for the Front-End Programming course.
 
 ## ✨ Features Implemented
 
