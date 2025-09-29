@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Support Center - POS System</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <script>
+      // Redirect to login if not authenticated
+      const session =
+        localStorage.getItem("posSession") ||
+        sessionStorage.getItem("posSession");
+      if (!session) {
+        window.location.href = "login.html";
+      }
+    </script>
+
+    <div class="dashboard-container">
+      <!-- Sidebar Navigation -->
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <h2><i class="fas fa-cash-register"></i> POS System</h2>
+        </div>
+
+        <ul class="sidebar-menu">
+          <li class="menu-item">
+            <a href="dashboard.html">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="pos.html">
+              <i class="fas fa-shopping-cart"></i>
+              <span>Kasir / POS</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="products.html">
+              <i class="fas fa-box"></i>
+              <span>Produk & Katalog</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="transactions.html">
+              <i class="fas fa-receipt"></i>
+              <span>Transaksi</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="inventory.html">
+              <i class="fas fa-warehouse"></i>
+              <span>Inventori</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="reports.html">
+              <i class="fas fa-chart-bar"></i>
+              <span>Laporan</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="settings.html">
+              <i class="fas fa-cog"></i>
+              <span>Pengaturan</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="contact.html">
+              <i class="fas fa-envelope"></i>
+              <span>Contact Us</span>
+            </a>
+          </li>
+          <li class="menu-item active">
+            <a href="support.html">
+              <i class="fas fa-life-ring"></i>
+              <span>Support Center</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-footer">
+          <div class="user-info">
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="user-details">
+              <span class="user-name" id="userName">John Doe</span>
+              <span class="user-role">Admin</span>
+            </div>
+          </div>
+          <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </button>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="main-header">
+          <div class="header-left">
+            <h1>Support Center</h1>
+            <p>Pusat bantuan dan dukungan teknis</p>
+          </div>
+        </header>
+
+        <div class="support-container">
+          <!-- FAQ Section -->
+          <section class="faq-section">
+            <h2>Frequently Asked Questions (FAQ)</h2>
+            <div class="faq-list">
+              <div class="faq-item">
+                <div class="faq-question">
+                  <h3>Bagaimana cara menambah produk baru?</h3>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                  <p>Untuk menambah produk baru, ikuti langkah berikut:</p>
+                  <ol>
+                    <li>Buka menu "Produk & Katalog"</li>
+                    <li>Klik tombol "Tambah Produk"</li>
+                    <li>Isi informasi produk (nama, harga, stok, kategori)</li>
+                    <li>Klik "Simpan" untuk menyimpan produk</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <h3>Bagaimana cara melakukan refund?</h3>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                  <p>Untuk melakukan refund:</p>
+                  <ol>
+                    <li>Buka menu "Kasir / POS"</li>
+                    <li>Pilih tab "Refund"</li>
+                    <li>Cari transaksi yang akan di-refund</li>
+                    <li>Pilih item yang akan di-refund</li>
+                    <li>Tentukan kondisi barang</li>
+                    <li>Klik "Proses Refund"</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <h3>Bagaimana cara mengubah metode pembayaran?</h3>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                  <p>Untuk mengubah metode pembayaran:</p>
+                  <ol>
+                    <li>Buka menu "Kasir / POS"</li>
+                    <li>Pilih tab "Pembayaran"</li>
+                    <li>Pilih metode pembayaran yang diinginkan</li>
+                    <li>Klik "Proses Pembayaran"</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <h3>Bagaimana cara melihat laporan penjualan?</h3>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                  <p>Untuk melihat laporan penjualan:</p>
+                  <ol>
+                    <li>Buka menu "Laporan"</li>
+                    <li>Pilih periode laporan</li>
+                    <li>Pilih jenis laporan (penjualan, produk, dll)</li>
+                    <li>Klik "Generate Laporan"</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <h3>Bagaimana cara mengatur pajak?</h3>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                  <p>Untuk mengatur pajak:</p>
+                  <ol>
+                    <li>Buka menu "Pengaturan"</li>
+                    <li>Pilih "Pengaturan Pajak"</li>
+                    <li>Masukkan persentase pajak</li>
+                    <li>Klik "Simpan"</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Message Box Section -->
+          <section class="message-section">
+            <h2>Kirim Pesan Support</h2>
+            <div class="message-form-card">
+              <form class="support-form" id="supportForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="supportName">Nama</label>
+                    <input type="text" id="supportName" name="name" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="supportEmail">Email</label>
+                    <input
+                      type="email"
+                      id="supportEmail"
+                      name="email"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="supportSubject">Subjek</label>
+                  <select id="supportSubject" name="subject" required>
+                    <option value="">Pilih subjek</option>
+                    <option value="technical">Masalah Teknis</option>
+                    <option value="feature">Permintaan Fitur</option>
+                    <option value="bug">Laporan Bug</option>
+                    <option value="training">Permintaan Training</option>
+                    <option value="billing">Masalah Billing</option>
+                    <option value="other">Lainnya</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="supportPriority">Prioritas</label>
+                  <select id="supportPriority" name="priority" required>
+                    <option value="low">Rendah</option>
+                    <option value="medium" selected>Sedang</option>
+                    <option value="high">Tinggi</option>
+                    <option value="urgent">Mendesak</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="supportMessage">Pesan</label>
+                  <textarea
+                    id="supportMessage"
+                    name="message"
+                    rows="6"
+                    required
+                    placeholder="Jelaskan masalah atau permintaan Anda secara detail..."
+                  ></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                  <i class="fas fa-paper-plane"></i> Kirim Pesan Support
+                </button>
+              </form>
+            </div>
+          </section>
+
+          <!-- Feedback Section -->
+          <section class="feedback-section">
+            <h2>Feedback & Saran</h2>
+            <div class="feedback-form-card">
+              <form class="feedback-form" id="feedbackForm">
+                <div class="form-group">
+                  <label for="feedbackRating">Rating Sistem</label>
+                  <div class="rating-input">
+                    <input type="radio" id="star5" name="rating" value="5" />
+                    <label for="star5"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="star4" name="rating" value="4" />
+                    <label for="star4"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="star3" name="rating" value="3" />
+                    <label for="star3"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="star2" name="rating" value="2" />
+                    <label for="star2"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="star1" name="rating" value="1" />
+                    <label for="star1"><i class="fas fa-star"></i></label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="feedbackCategory">Kategori Feedback</label>
+                  <select id="feedbackCategory" name="category" required>
+                    <option value="">Pilih kategori</option>
+                    <option value="ui">User Interface</option>
+                    <option value="performance">Performance</option>
+                    <option value="features">Fitur</option>
+                    <option value="usability">Kemudahan Penggunaan</option>
+                    <option value="support">Dukungan</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="feedbackMessage">Feedback & Saran</label>
+                  <textarea
+                    id="feedbackMessage"
+                    name="message"
+                    rows="5"
+                    required
+                    placeholder="Bagikan feedback dan saran Anda untuk perbaikan sistem..."
+                  ></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                  <i class="fas fa-thumbs-up"></i> Kirim Feedback
+                </button>
+              </form>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="support.js"></script>
+  </body>
+</html>

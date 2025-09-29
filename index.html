@@ -1,180 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>POS System - Point of Sale</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <script>
-        // Redirect to login if not authenticated
-        const session = localStorage.getItem('posSession') || sessionStorage.getItem('posSession');
-        if (!session) {
-            window.location.href = 'login.html';
-        }
+      // Redirect to login if not authenticated
+      const session =
+        localStorage.getItem("posSession") ||
+        sessionStorage.getItem("posSession");
+      if (!session) {
+        window.location.href = "pages/auth/login.html";
+      }
     </script>
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <h1><i class="fas fa-cash-register"></i> POS System</h1>
-                <div class="header-info">
-                    <span class="date-time" id="dateTime"></span>
-                    <span class="user-info">Cashier: John Doe</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Product Grid -->
-            <section class="product-section">
-                <div class="section-header">
-                    <h2>Products</h2>
-                    <div class="search-bar">
-                        <input type="text" id="productSearch" placeholder="Search products...">
-                        <i class="fas fa-search"></i>
-                    </div>
-                </div>
-                
-                <div class="product-grid" id="productGrid">
-                    <!-- Products will be dynamically loaded here -->
-                    <div class="product-card" data-product-id="1">
-                        <div class="product-image">
-                            <i class="fas fa-coffee"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>Coffee</h3>
-                            <p class="product-price">$3.50</p>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card" data-product-id="2">
-                        <div class="product-image">
-                            <i class="fas fa-hamburger"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>Burger</h3>
-                            <p class="product-price">$8.99</p>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card" data-product-id="3">
-                        <div class="product-image">
-                            <i class="fas fa-pizza-slice"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>Pizza</h3>
-                            <p class="product-price">$12.99</p>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card" data-product-id="4">
-                        <div class="product-image">
-                            <i class="fas fa-ice-cream"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>Ice Cream</h3>
-                            <p class="product-price">$4.50</p>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card" data-product-id="5">
-                        <div class="product-image">
-                            <i class="fas fa-cookie-bite"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>Cookie</h3>
-                            <p class="product-price">$2.99</p>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card" data-product-id="6">
-                        <div class="product-image">
-                            <i class="fas fa-wine-bottle"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>Wine</h3>
-                            <p class="product-price">$15.99</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Cart Section -->
-            <section class="cart-section">
-                <div class="cart-header">
-                    <h2>Current Order</h2>
-                    <button class="clear-cart-btn" id="clearCart">
-                        <i class="fas fa-trash"></i> Clear
-                    </button>
-                </div>
-                
-                <div class="cart-items" id="cartItems">
-                    <!-- Cart items will be dynamically added here -->
-                </div>
-                
-                <div class="cart-summary">
-                    <div class="summary-row">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">$0.00</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Tax (8%):</span>
-                        <span id="tax">$0.00</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Total:</span>
-                        <span id="total">$0.00</span>
-                    </div>
-                </div>
-                
-                <div class="payment-section">
-                    <div class="payment-methods">
-                        <button class="payment-btn cash" data-method="cash">
-                            <i class="fas fa-money-bill-wave"></i> Cash
-                        </button>
-                        <button class="payment-btn card" data-method="card">
-                            <i class="fas fa-credit-card"></i> Card
-                        </button>
-                        <button class="payment-btn mobile" data-method="mobile">
-                            <i class="fas fa-mobile-alt"></i> Mobile
-                        </button>
-                    </div>
-                    
-                    <button class="checkout-btn" id="checkoutBtn" disabled>
-                        <i class="fas fa-check"></i> Process Payment
-                    </button>
-                </div>
-            </section>
-        </main>
-
-        <!-- Receipt Modal -->
-        <div class="modal" id="receiptModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Receipt</h2>
-                    <button class="close-btn" id="closeModal">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="receipt-content" id="receiptContent">
-                    <!-- Receipt content will be generated here -->
-                </div>
-                <div class="modal-footer">
-                    <button class="print-btn" id="printReceipt">
-                        <i class="fas fa-print"></i> Print
-                    </button>
-                    <button class="email-btn" id="emailReceipt">
-                        <i class="fas fa-envelope"></i> Email
-                    </button>
-                </div>
-            </div>
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <h1><i class="fas fa-cash-register"></i> POS System</h1>
+          <div class="header-info">
+            <span class="date-time" id="dateTime"></span>
+            <span class="user-info">Cashier: John Doe</span>
+          </div>
         </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Product Grid -->
+        <section class="product-section">
+          <div class="section-header">
+            <h2>Products</h2>
+            <div class="search-bar">
+              <input
+                type="text"
+                id="productSearch"
+                placeholder="Search products..."
+              />
+              <i class="fas fa-search"></i>
+            </div>
+          </div>
+
+          <div class="product-grid" id="productGrid">
+            <!-- Products will be dynamically loaded here -->
+            <div class="product-card" data-product-id="1">
+              <div class="product-image">
+                <i class="fas fa-coffee"></i>
+              </div>
+              <div class="product-info">
+                <h3>Coffee</h3>
+                <p class="product-price">$3.50</p>
+              </div>
+            </div>
+
+            <div class="product-card" data-product-id="2">
+              <div class="product-image">
+                <i class="fas fa-hamburger"></i>
+              </div>
+              <div class="product-info">
+                <h3>Burger</h3>
+                <p class="product-price">$8.99</p>
+              </div>
+            </div>
+
+            <div class="product-card" data-product-id="3">
+              <div class="product-image">
+                <i class="fas fa-pizza-slice"></i>
+              </div>
+              <div class="product-info">
+                <h3>Pizza</h3>
+                <p class="product-price">$12.99</p>
+              </div>
+            </div>
+
+            <div class="product-card" data-product-id="4">
+              <div class="product-image">
+                <i class="fas fa-ice-cream"></i>
+              </div>
+              <div class="product-info">
+                <h3>Ice Cream</h3>
+                <p class="product-price">$4.50</p>
+              </div>
+            </div>
+
+            <div class="product-card" data-product-id="5">
+              <div class="product-image">
+                <i class="fas fa-cookie-bite"></i>
+              </div>
+              <div class="product-info">
+                <h3>Cookie</h3>
+                <p class="product-price">$2.99</p>
+              </div>
+            </div>
+
+            <div class="product-card" data-product-id="6">
+              <div class="product-image">
+                <i class="fas fa-wine-bottle"></i>
+              </div>
+              <div class="product-info">
+                <h3>Wine</h3>
+                <p class="product-price">$15.99</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Cart Section -->
+        <section class="cart-section">
+          <div class="cart-header">
+            <h2>Current Order</h2>
+            <button class="clear-cart-btn" id="clearCart">
+              <i class="fas fa-trash"></i> Clear
+            </button>
+          </div>
+
+          <div class="cart-items" id="cartItems">
+            <!-- Cart items will be dynamically added here -->
+          </div>
+
+          <div class="cart-summary">
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span id="subtotal">$0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Tax (8%):</span>
+              <span id="tax">$0.00</span>
+            </div>
+            <div class="summary-row total">
+              <span>Total:</span>
+              <span id="total">$0.00</span>
+            </div>
+          </div>
+
+          <div class="payment-section">
+            <div class="payment-methods">
+              <button class="payment-btn cash" data-method="cash">
+                <i class="fas fa-money-bill-wave"></i> Cash
+              </button>
+              <button class="payment-btn card" data-method="card">
+                <i class="fas fa-credit-card"></i> Card
+              </button>
+              <button class="payment-btn mobile" data-method="mobile">
+                <i class="fas fa-mobile-alt"></i> Mobile
+              </button>
+            </div>
+
+            <button class="checkout-btn" id="checkoutBtn" disabled>
+              <i class="fas fa-check"></i> Process Payment
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <!-- Receipt Modal -->
+      <div class="modal" id="receiptModal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Receipt</h2>
+            <button class="close-btn" id="closeModal">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="receipt-content" id="receiptContent">
+            <!-- Receipt content will be generated here -->
+          </div>
+          <div class="modal-footer">
+            <button class="print-btn" id="printReceipt">
+              <i class="fas fa-print"></i> Print
+            </button>
+            <button class="email-btn" id="emailReceipt">
+              <i class="fas fa-envelope"></i> Email
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

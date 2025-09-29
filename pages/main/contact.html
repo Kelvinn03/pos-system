@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - POS System</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <script>
+      // Redirect to login if not authenticated
+      const session =
+        localStorage.getItem("posSession") ||
+        sessionStorage.getItem("posSession");
+      if (!session) {
+        window.location.href = "login.html";
+      }
+    </script>
+
+    <div class="dashboard-container">
+      <!-- Sidebar Navigation -->
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <h2><i class="fas fa-cash-register"></i> POS System</h2>
+        </div>
+
+        <ul class="sidebar-menu">
+          <li class="menu-item">
+            <a href="dashboard.html">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="pos.html">
+              <i class="fas fa-shopping-cart"></i>
+              <span>Kasir / POS</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="products.html">
+              <i class="fas fa-box"></i>
+              <span>Produk & Katalog</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="transactions.html">
+              <i class="fas fa-receipt"></i>
+              <span>Transaksi</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="inventory.html">
+              <i class="fas fa-warehouse"></i>
+              <span>Inventori</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="reports.html">
+              <i class="fas fa-chart-bar"></i>
+              <span>Laporan</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="settings.html">
+              <i class="fas fa-cog"></i>
+              <span>Pengaturan</span>
+            </a>
+          </li>
+          <li class="menu-item active">
+            <a href="contact.html">
+              <i class="fas fa-envelope"></i>
+              <span>Contact Us</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="support.html">
+              <i class="fas fa-life-ring"></i>
+              <span>Support Center</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-footer">
+          <div class="user-info">
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="user-details">
+              <span class="user-name" id="userName">John Doe</span>
+              <span class="user-role">Admin</span>
+            </div>
+          </div>
+          <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </button>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="main-header">
+          <div class="header-left">
+            <h1>Contact Us</h1>
+            <p>Hubungi kami untuk bantuan dan informasi</p>
+          </div>
+        </header>
+
+        <div class="contact-container">
+          <div class="contact-info">
+            <div class="contact-card">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-details">
+                <h3>Email</h3>
+                <p>support@possystem.com</p>
+                <p>info@possystem.com</p>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="contact-details">
+                <h3>Telepon</h3>
+                <p>+62 21 1234 5678</p>
+                <p>+62 21 8765 4321</p>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-icon">
+                <i class="fas fa-mobile-alt"></i>
+              </div>
+              <div class="contact-details">
+                <h3>WhatsApp</h3>
+                <p>+62 812 3456 7890</p>
+                <p>+62 813 9876 5432</p>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="contact-details">
+                <h3>Alamat</h3>
+                <p>Jl. Sudirman No. 123</p>
+                <p>Jakarta Selatan 12190</p>
+                <p>Indonesia</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-section">
+            <div class="contact-form-card">
+              <h2>Kirim Pesan</h2>
+              <form class="contact-form" id="contactForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="name">Nama Lengkap</label>
+                    <input type="text" id="name" name="name" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="phone">Nomor Telepon</label>
+                    <input type="tel" id="phone" name="phone" />
+                  </div>
+                  <div class="form-group">
+                    <label for="subject">Subjek</label>
+                    <select id="subject" name="subject" required>
+                      <option value="">Pilih subjek</option>
+                      <option value="support">Support Teknis</option>
+                      <option value="sales">Penjualan</option>
+                      <option value="billing">Billing</option>
+                      <option value="feature">Permintaan Fitur</option>
+                      <option value="bug">Laporan Bug</option>
+                      <option value="other">Lainnya</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="message">Pesan</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="6"
+                    required
+                    placeholder="Tuliskan pesan Anda di sini..."
+                  ></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                  <i class="fas fa-paper-plane"></i> Kirim Pesan
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="business-hours">
+          <h2>Jam Operasional</h2>
+          <div class="hours-grid">
+            <div class="hours-item">
+              <span class="day">Senin - Jumat</span>
+              <span class="time">08:00 - 17:00 WIB</span>
+            </div>
+            <div class="hours-item">
+              <span class="day">Sabtu</span>
+              <span class="time">08:00 - 15:00 WIB</span>
+            </div>
+            <div class="hours-item">
+              <span class="day">Minggu</span>
+              <span class="time">Tutup</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="contact.js"></script>
+  </body>
+</html>
