@@ -197,12 +197,17 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    gap: 10px;
+    flex-wrap: wrap; /* allow title/button to wrap on smaller widths */
 }
 
 .cart-header h2 {
     color: #4a5568;
     font-size: 1.8rem;
     font-weight: 600;
+    margin: 0;
+    flex: 1 1 auto; /* allow title to shrink */
+    min-width: 0;
 }
 
 .clear-cart-btn {
@@ -217,6 +222,16 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+/* Ensure clear button doesn't overflow the card and can wrap underneath title */
+.cart-header .clear-cart-btn {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 768px) {
+    .cart-header h2 { font-size: 1.4rem; }
+    .clear-cart-btn { padding: 8px 12px; font-size: 0.85rem; }
 }
 
 .clear-cart-btn:hover {
@@ -691,15 +706,17 @@ body {
 
 .input-group i {
     position: absolute;
-    left: 15px;
+    left: 18px;
     color: #a0aec0;
     z-index: 2;
+    pointer-events: none; /* allow clicks through decorative icon */
 }
 
 .input-group input,
 .input-group select {
     width: 100%;
-    padding: 15px 15px 15px 45px;
+    /* left padding keeps text clear of left icon; right padding reduced since eye button is hidden */
+    padding: 15px 18px 15px 48px;
     border: 2px solid #e2e8f0;
     border-radius: 12px;
     font-size: 1rem;
@@ -716,14 +733,9 @@ body {
 }
 
 .toggle-password {
-    position: absolute;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #a0aec0;
-    cursor: pointer;
-    z-index: 2;
-    padding: 5px;
+    /* hide the eye toggle when not needed */
+    display: none;
+    pointer-events: none;
 }
 
 .toggle-password:hover {
@@ -886,6 +898,11 @@ body {
     background: #f7fafc;
 }
 
+/* Prevent horizontal overflow from dashboard children and make layout shrink-friendly */
+.dashboard-container {
+    overflow-x: hidden;
+}
+
 .sidebar {
     width: 280px;
     background: white;
@@ -1009,6 +1026,14 @@ body {
     padding: 30px;
 }
 
+/* Ensure main content never exceeds available viewport width (accounts for fixed sidebar)
+   and allow internal grid/flex children to shrink properly. */
+.main-content {
+    max-width: calc(100vw - 280px);
+    box-sizing: border-box;
+    min-width: 0; /* allow flex children to shrink */
+}
+
 .main-header {
     display: flex;
     justify-content: space-between;
@@ -1043,6 +1068,15 @@ body {
     margin-bottom: 30px;
 }
 
+/* Allow cards to shrink and prevent them from forcing wider layouts */
+.summary-card,
+.chart-container,
+.top-products,
+.recent-transactions,
+.quick-actions {
+    min-width: 0;
+}
+
 .summary-card {
     background: white;
     padding: 25px;
@@ -1052,6 +1086,12 @@ body {
     align-items: center;
     gap: 20px;
     transition: all 0.3s ease;
+}
+
+/* Ensure card contents (like charts) can't overflow their rounded containers */
+.summary-card,
+.chart-container {
+    overflow: hidden;
 }
 
 .summary-card:hover {
@@ -1119,9 +1159,16 @@ body {
 
 .analytics-section {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    /* keep main chart flexible, but ensure right column (Top Produk / Recent Transactions)
+       has a usable minimum width so it doesn't get cramped on medium screens */
+    grid-template-columns: 2fr minmax(260px, 1fr);
     gap: 30px;
     margin-bottom: 30px;
+}
+
+/* Give Top Produk a sensible min width so its list/items aren't squashed */
+.top-products {
+    min-width: 260px;
 }
 
 .chart-container,
@@ -1138,6 +1185,34 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+}
+
+/* Improve header wrapping for chart cards: allow controls to wrap beneath the title
+   and ensure the title can shrink without forcing overflow. Also make chart
+   container stack its children vertically so the chart sits under the header. */
+.chart-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-header {
+    gap: 12px;
+    flex-wrap: wrap; /* allow buttons/controls to wrap on smaller widths */
+}
+
+.chart-header h3 {
+    /* allow long titles to shrink/wrap gracefully */
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    word-break: break-word;
+}
+
+.chart-controls {
+    /* ensure controls sit nicely when wrapped */
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
 .chart-header h3,
@@ -1177,6 +1252,16 @@ body {
     background: #f7fafc;
     border-radius: 10px;
     color: #718096;
+}
+
+/* Make sure any SVG/canvas/chart inside the placeholder scales to the container */
+.chart-placeholder > *,
+.chart-container canvas,
+.chart-container svg {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    box-sizing: border-box;
 }
 
 .top-products-list {
@@ -1397,18 +1482,58 @@ body {
     }
 }
 
+/* Responsive font scaling: progressively reduce base font-size and large headings
+   so the UI fits smaller screens better. Uses rem-based sizes already present
+   across the stylesheet; we only override a few large elements for fine tuning. */
+html {
+    font-size: 16px; /* default */
+}
+
+@media (max-width: 1200px) {
+    html { font-size: 15px; }
+    .main-header h1 { font-size: 2.2rem; }
+    .card-value { font-size: 1.6rem; }
+}
+
+@media (max-width: 992px) {
+    html { font-size: 14px; }
+    .main-header h1 { font-size: 2rem; }
+    .card-value { font-size: 1.4rem; }
+    .card-content h3 { font-size: 0.95rem; }
+}
+
+@media (max-width: 768px) {
+    html { font-size: 13px; }
+    .main-header h1 { font-size: 1.6rem; }
+    .card-value { font-size: 1.2rem; }
+    .summary-card { padding: 18px; }
+    .summary-cards .card-content h3 { font-size: 0.9rem; }
+}
+
+@media (max-width: 480px) {
+    html { font-size: 12px; }
+    .main-header h1 { font-size: 1.4rem; }
+    .card-value { font-size: 1.05rem; }
+    .summary-card { padding: 14px; }
+    .menu-item a { padding: 12px 14px; }
+}
+
 /* POS Specific Styles */
 .pos-tabs {
     display: flex;
     gap: 10px;
     margin-bottom: 30px;
     border-bottom: 2px solid #e2e8f0;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-start; /* ensure tabs start from left */
+    flex-wrap: wrap; /* allow tabs to wrap instead of overflowing */
 }
 
 .tab-btn {
     background: none;
     border: none;
-    padding: 15px 25px;
+    padding: 12px 18px;
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
@@ -1437,8 +1562,79 @@ body {
 
 .pos-container {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    /* Make the right column (cart) have a usable minimum width so it doesn't get too skinny.
+       Left column (product list) remains flexible. */
+    grid-template-columns: 1fr minmax(340px, 420px);
     gap: 30px;
+}
+
+/* On very wide screens give a bit more room to the product list while keeping cart stable */
+@media (min-width: 1600px) {
+    .pos-container {
+        grid-template-columns: 1.4fr minmax(360px, 480px);
+    }
+}
+
+/* Responsive POS layout: stack product and cart sections on narrow screens
+   and make both sections flexible to avoid overflow. */
+@media (max-width: 1024px) {
+    .pos-container {
+        grid-template-columns: 1fr; /* stack vertically */
+        gap: 20px;
+    }
+
+    .product-section,
+    .cart-section {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+
+    .cart-section {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .pos-tabs {
+        margin-bottom: 20px;
+        gap: 8px;
+    }
+
+    .tab-btn {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    /* Move header-right (date) below the main header on small screens if needed */
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .header-right {
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-grid {
+        grid-template-columns: 1fr; /* single column product list on small screens */
+        gap: 15px;
+    }
+
+    .search-bar input {
+        width: 100%;
+    }
+
+    .cart-summary .summary-row {
+        font-size: 0.95rem;
+    }
 }
 
 .payment-container,
@@ -1999,6 +2195,13 @@ body {
 .form-group textarea {
     resize: vertical;
     min-height: 120px;
+}
+
+/* Ensure inputs that have an icon (inside .input-group) keep extra left padding
+   This is placed after the generic .form-group input rule so it takes precedence. */
+.form-group .input-group input,
+.form-group .input-group select {
+    padding-left: 48px;
 }
 
 .submit-btn {
