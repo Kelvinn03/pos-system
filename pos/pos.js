@@ -106,17 +106,7 @@ class EnhancedPOS {
             processPaymentBtn.addEventListener('click', () => this.processPayment());
         }
 
-        // Transaction search
-        const searchTransactionBtn = document.getElementById('searchTransactionBtn');
-        if (searchTransactionBtn) {
-            searchTransactionBtn.addEventListener('click', () => this.searchTransaction());
-        }
 
-        // Process refund button
-        const processRefundBtn = document.getElementById('processRefundBtn');
-        if (processRefundBtn) {
-            processRefundBtn.addEventListener('click', () => this.processRefund());
-        }
 
         // Modal controls
         const closeModalBtn = document.getElementById('closeModal');
@@ -163,8 +153,6 @@ class EnhancedPOS {
         // Load tab-specific data
         if (tabName === 'payment') {
             this.loadPaymentDetails();
-        } else if (tabName === 'refund') {
-            this.clearRefundResults();
         }
     }
 
@@ -443,133 +431,7 @@ class EnhancedPOS {
         this.renderProducts();
     }
 
-    searchTransaction() {
-        const searchTerm = document.getElementById('transactionSearch').value.trim();
-        if (!searchTerm) return;
 
-        const transactions = JSON.parse(localStorage.getItem('posTransactions') || '[]');
-        const results = transactions.filter(t => 
-            t.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            t.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
-        );
-
-        this.displayTransactionResults(results);
-    }
-
-    displayTransactionResults(results) {
-        const refundResults = document.getElementById('refundResults');
-        if (!refundResults) return;
-
-        if (results.length === 0) {
-            refundResults.innerHTML = '<div class="no-results">Tidak ada transaksi ditemukan</div>';
-            return;
-        }
-
-        refundResults.innerHTML = results.map(transaction => `
-            <div class="transaction-result" data-transaction-id="${transaction.id}">
-                <div class="transaction-info">
-                    <h4>${transaction.id}</h4>
-                    <p>${this.formatDate(transaction.date)}</p>
-                    <p>Total: ${this.formatCurrency(transaction.total)}</p>
-                </div>
-                <button class="select-transaction-btn" onclick="pos.selectTransaction('${transaction.id}')">
-                    Pilih
-                </button>
-            </div>
-        `).join('');
-    }
-
-    selectTransaction(transactionId) {
-        const transactions = JSON.parse(localStorage.getItem('posTransactions') || '[]');
-        this.selectedTransaction = transactions.find(t => t.id === transactionId);
-        
-        if (this.selectedTransaction) {
-            this.displayRefundItems();
-        }
-    }
-
-    displayRefundItems() {
-        const refundItems = document.getElementById('refundItems');
-        const refundItemsList = document.getElementById('refundItemsList');
-        
-        if (!refundItems || !refundItemsList || !this.selectedTransaction) return;
-
-        refundItems.style.display = 'block';
-        refundItemsList.innerHTML = this.selectedTransaction.items.map(item => `
-            <div class="refund-item">
-                <div class="refund-item-info">
-                    <h4>${item.name}</h4>
-                    <p>${this.formatCurrency(item.price)} x ${item.quantity}</p>
-                </div>
-                <div class="refund-item-controls">
-                    <label>
-                        <input type="checkbox" class="refund-checkbox" data-item-id="${item.id}">
-                        Pilih untuk refund
-                    </label>
-                    <select class="refund-condition" data-item-id="${item.id}">
-                        <option value="good">Barang Baik</option>
-                        <option value="damaged">Barang Rusak</option>
-                        <option value="defective">Barang Cacat</option>
-                    </select>
-                </div>
-            </div>
-        `).join('');
-
-        // Add event listeners for refund checkboxes
-        document.querySelectorAll('.refund-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', () => this.updateRefundButton());
-        });
-    }
-
-    updateRefundButton() {
-        const checkedItems = document.querySelectorAll('.refund-checkbox:checked');
-        const processRefundBtn = document.getElementById('processRefundBtn');
-        
-        if (processRefundBtn) {
-            processRefundBtn.disabled = checkedItems.length === 0;
-        }
-    }
-
-    processRefund() {
-        const checkedItems = document.querySelectorAll('.refund-checkbox:checked');
-        if (checkedItems.length === 0) return;
-
-        const refundItems = Array.from(checkedItems).map(checkbox => {
-            const itemId = parseInt(checkbox.dataset.itemId);
-            const condition = document.querySelector(`[data-item-id="${itemId}"].refund-condition`).value;
-            const originalItem = this.selectedTransaction.items.find(item => item.id === itemId);
-            
-            return {
-                ...originalItem,
-                condition: condition
-            };
-        });
-
-        // Create refund record
-        const refund = {
-            id: this.generateTransactionId(),
-            originalTransactionId: this.selectedTransaction.id,
-            date: new Date().toISOString(),
-            items: refundItems,
-            total: refundItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-            status: 'completed'
-        };
-
-        // Save refund
-        const refunds = JSON.parse(localStorage.getItem('posRefunds') || '[]');
-        refunds.push(refund);
-        localStorage.setItem('posRefunds', JSON.stringify(refunds));
-
-        this.showMessage('Refund berhasil diproses!', 'success');
-        this.clearRefundResults();
-    }
-
-    clearRefundResults() {
-        document.getElementById('refundResults').innerHTML = '';
-        document.getElementById('refundItems').style.display = 'none';
-        document.getElementById('transactionSearch').value = '';
-        this.selectedTransaction = null;
-    }
 
     showReceipt(transaction) {
         const modal = document.getElementById('receiptModal');
