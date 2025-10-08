@@ -76,6 +76,24 @@ body {
     flex: 1;
 }
 
+/* Products page: stack header and catalog vertically, full-width */
+.catalog-layout {
+    display: block; /* override grid */
+}
+
+.catalog-layout .product-section {
+    margin-top: 10px;
+}
+
+.catalog-layout #catalogGrid.product-grid {
+    /* Saat menampilkan tabel katalog, jangan gunakan layout grid yang sempit */
+    display: block;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+}
+
 /* Product Section */
 .product-section {
     background: rgba(255, 255, 255, 0.95);
@@ -140,6 +158,86 @@ body {
     padding-right: 10px;
 }
 
+/* Product Table (Catalog list view) */
+.product-table-wrapper {
+    overflow-x: auto;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+}
+
+.product-table thead th {
+    text-align: left;
+    padding: 12px;
+    color: #4a5568;
+    font-weight: 600;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.product-table tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #edf2f7;
+    vertical-align: middle;
+}
+
+.product-status.available { color: #38a169; font-weight: 600; }
+.product-status.oos { color: #e53e3e; font-weight: 600; }
+
+.table-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #f7fafc;
+    color: #4a5568;
+    cursor: pointer;
+}
+.btn.primary { background: #667eea; color: #fff; border-color: #667eea; }
+.btn.small { padding: 6px 10px; font-size: 0.85rem; }
+
+/* Product Form */
+.product-form-content { padding: 16px 20px; }
+.product-form { padding: 18px 22px; }
+.product-form {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(92vh - 120px); /* batasi tinggi agar footer terlihat */
+    box-sizing: border-box;
+}
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+    gap: 14px;
+    flex: 1 1 auto; /* biar grid mengisi ruang dan bisa scroll */
+    overflow-y: auto;
+}
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 0 0;
+    border-top: 1px solid #e2e8f0;
+    background: #fff;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { color: #4a5568; font-weight: 500; }
+.form-group input, .form-group select, .form-group textarea {
+    padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f7fafc;
+}
+.form-actions { margin-top: 12px; display: flex; gap: 10px; justify-content: flex-end; }
+
 .product-card {
     background: white;
     border-radius: 15px;
@@ -178,6 +276,133 @@ body {
     color: #38a169;
     font-size: 1.3rem;
     font-weight: 700;
+}
+
+/* Catalog-specific thumbnails */
+.product-thumb {
+    width: 100%;
+    height: 140px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Catalog Grid Compact (Products page) */
+#catalogGrid.product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+#catalogGrid .product-card {
+    padding: 14px;
+    border-radius: 12px;
+}
+
+#catalogGrid .product-thumb {
+    height: 110px;
+    margin-bottom: 10px;
+}
+
+#catalogGrid .product-info h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+#catalogGrid .product-price {
+    font-size: 1.05rem;
+}
+
+/* Product Detail Modal Content */
+.product-detail-content {
+    padding: 20px 25px;
+}
+
+.product-detail-body {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.product-detail-image {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    max-height: 280px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.product-detail-info h3 {
+    color: #4a5568;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.product-detail-price {
+    color: #38a169;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.product-detail-desc {
+    color: #2d3748;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.product-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.product-tag {
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #edf2f7;
+    color: #4a5568;
+    font-size: 0.85rem;
+    border: 1px solid #e2e8f0;
+}
+
+/* Catalog Tag Filter chips */
+/* Catalog Category Filter chips */
+.category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.category-chip {
+    padding: 6px 12px;
+    border-radius: 18px;
+    background: #f7fafc;
+    color: #4a5568;
+    font-size: 0.85rem;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.category-chip:hover {
+    background: #edf2f7;
+}
+
+.category-chip.active {
+    background: #667eea;
+    color: #fff;
+    border-color: #667eea;
+}
+
+@media (max-width: 768px) {
+    .product-detail-body {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Cart Section */
@@ -443,8 +668,8 @@ body {
     margin: 5% auto;
     padding: 0;
     border-radius: 15px;
-    width: 90%;
-    max-width: 500px;
+    width: 85%;
+    max-width: 720px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     animation: modalSlideIn 0.3s ease;
 }
@@ -573,7 +798,11 @@ body {
     
     .modal-content {
         width: 95%;
-        margin: 10% auto;
+        margin: 6% auto; /* dorong sedikit ke atas di layar kecil */
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -2461,4 +2690,21 @@ html {
     .rating-input {
         justify-content: center;
     }
+}
+/* Danger button for destructive actions */
+.btn.danger {
+  background-color: #E53E3E;
+  border-color: #E53E3E;
+  color: #fff;
+}
+.btn.danger:hover {
+  background-color: #C53030;
+  border-color: #C53030;
+}
+
+/* Empty state row in product table */
+.product-table .empty-state {
+  text-align: center;
+  color: #718096;
+  padding: 14px;
 }

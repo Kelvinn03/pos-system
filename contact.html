@@ -9,10 +9,14 @@
 </head>
 <body>
     <script>
-        // Redirect to login if not authenticated
-        const session = localStorage.getItem('posSession') || sessionStorage.getItem('posSession');
-        if (!session) {
-            window.location.href = 'login.html';
+        // Redirect to login if not authenticated (respects authDisabled flag)
+        const urlAuthDisabled = new URLSearchParams(window.location.search).get('authDisabled') === 'true';
+        const authDisabled = (window.AUTH_DISABLED === true) || (localStorage.getItem('authDisabled') === 'true') || urlAuthDisabled;
+        if (!authDisabled) {
+            const session = localStorage.getItem('posSession') || sessionStorage.getItem('posSession');
+            if (!session) {
+                window.location.href = 'login.html';
+            }
         }
     </script>
     
