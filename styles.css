@@ -1339,6 +1339,48 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Summary KPI cards */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 16px 0 24px;
+}
+
+.summary-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+}
+
+.summary-label {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+.summary-value {
+    color: #2d3748;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.summary-change {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #2f855a; /* default hijau (naik) */
+}
+.summary-change.down { color: #c53030; }
+
+@media (max-width: 980px) {
+    .summary-cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+    .summary-cards { grid-template-columns: 1fr; }
+}
+
 .chart-header,
 .top-products-header {
     display: flex;
