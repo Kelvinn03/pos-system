@@ -23,7 +23,6 @@
     </script>
 
     <div class="dashboard-container">
-      <!-- Sidebar Navigation -->
       <nav class="sidebar">
         <div class="sidebar-header">
           <h2><i class="fas fa-cash-register"></i> POS System</h2>
@@ -109,7 +108,6 @@
         </div>
       </nav>
 
-      <!-- Main Content -->
       <main class="main-content">
         <header class="main-header">
           <div class="header-left">
@@ -121,7 +119,6 @@
           </div>
         </header>
 
-        <!-- Refund Content -->
         <div class="refund-page-container">
           <div class="refund-search-section">
             <div class="refund-search">
@@ -138,30 +135,31 @@
               </div>
             </div>
 
-            <div class="refund-results" id="refundResults">
-              <!-- Search results will be shown here -->
-            </div>
+            <div class="refund-results" id="refundResults"></div>
           </div>
 
-          <div class="refund-items-section" id="refundItems" style="display: none">
+          <div
+            class="refund-items-section"
+            id="refundItems"
+            style="display: none"
+          >
             <h3>Pilih Item untuk Refund</h3>
-            <div class="refund-items-list" id="refundItemsList">
-              <!-- Refund items will be shown here -->
-            </div>
+            <div class="refund-items-list" id="refundItemsList"></div>
 
-            <div class="refund-summary" id="refundSummary" style="display: none">
+            <div
+              class="refund-summary"
+              id="refundSummary"
+              style="display: none"
+            >
               <h4>Ringkasan Refund</h4>
-              <div class="refund-summary-content" id="refundSummaryContent">
-                <!-- Refund summary will be shown here -->
-              </div>
+              <div
+                class="refund-summary-content"
+                id="refundSummaryContent"
+              ></div>
             </div>
 
             <div class="refund-actions">
-              <button
-                class="process-refund-btn"
-                id="processRefundBtn"
-                disabled
-              >
+              <button class="process-refund-btn" id="processRefundBtn" disabled>
                 <i class="fas fa-undo"></i> Proses Refund
               </button>
               <button class="cancel-refund-btn" id="cancelRefundBtn">
@@ -170,18 +168,14 @@
             </div>
           </div>
 
-          <!-- Recent Refunds -->
           <div class="recent-refunds-section">
             <h3>Refund Terbaru</h3>
-            <div class="recent-refunds-list" id="recentRefundsList">
-              <!-- Recent refunds will be shown here -->
-            </div>
+            <div class="recent-refunds-list" id="recentRefundsList"></div>
           </div>
         </div>
       </main>
     </div>
 
-    <!-- Refund Confirmation Modal -->
     <div class="modal" id="refundConfirmModal">
       <div class="modal-content">
         <div class="modal-header">
@@ -190,9 +184,7 @@
             <i class="fas fa-times"></i>
           </button>
         </div>
-        <div class="refund-confirm-content" id="refundConfirmContent">
-          <!-- Refund confirmation details will be shown here -->
-        </div>
+        <div class="refund-confirm-content" id="refundConfirmContent"></div>
         <div class="modal-footer">
           <button class="confirm-refund-btn" id="confirmRefundBtn">
             <i class="fas fa-check"></i> Konfirmasi Refund
@@ -204,7 +196,6 @@
       </div>
     </div>
 
-    <!-- Refund Receipt Modal -->
     <div class="modal" id="refundReceiptModal">
       <div class="modal-content">
         <div class="modal-header">
@@ -213,9 +204,7 @@
             <i class="fas fa-times"></i>
           </button>
         </div>
-        <div class="refund-receipt-content" id="refundReceiptContent">
-          <!-- Refund receipt content will be generated here -->
-        </div>
+        <div class="refund-receipt-content" id="refundReceiptContent"></div>
         <div class="modal-footer">
           <button class="print-refund-btn" id="printRefundReceipt">
             <i class="fas fa-print"></i> Cetak

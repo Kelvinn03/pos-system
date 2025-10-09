@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pembayaran Berhasil - POS System</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pos/pos.css" />
+    <link rel="stylesheet" href="/pos/payment.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+      body {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .success-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      
+      .success-content {
+        background-color: white;
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        max-width: 400px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.5s ease;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(20px); }
+      }
+      
+      .success-icon {
+        font-size: 80px;
+        color: #48bb78;
+        margin-bottom: 20px;
+      }
+      
+      .success-message {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #2d3748;
+      }
+      
+      .receipt-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      
+      .receipt-content {
+        background-color: white;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.5s ease;
+      }
+      
+      .receipt-body {
+        padding: 20px 30px;
+      }
+      
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      
+      .modal-footer {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 20px;
+        border-top: 1px solid #e2e8f0;
+      }
+      
+      .action-button {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+      }
+      
+      .action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      }
+      
+      .print-button {
+        background: #4299e1;
+      }
+      
+      .close-button {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #718096;
+        transition: color 0.3s ease;
+      }
+      
+      .close-button:hover {
+        color: #2d3748;
+      }
+      
+      @media print {
+        .success-modal,
+        .modal-header,
+        .modal-footer,
+        .print-button,
+        .close-button,
+        #returnToPosBtn {
+          display: none !important;
+        }
+        
+        body {
+          background: white !important;
+          height: auto;
+          overflow: visible;
+          display: block;
+          padding: 0;
+          margin: 0;
+        }
+        
+        .receipt-modal {
+          position: absolute;
+          top: 0;
+          left: 0;
+          display: block !important;
+          width: 100%;
+          height: auto;
+          overflow: visible;
+          background: white;
+          box-shadow: none;
+        }
+        
+        .receipt-content {
+          box-shadow: none;
+          max-height: none;
+          overflow: visible;
+          animation: none;
+          width: 100%;
+          max-width: 100%;
+        }
+        
+        .receipt-body {
+          padding: 0;
+          margin: 0;
+          display: block !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="success-modal" id="successModal">
+      <div class="success-content">
+        <i class="fas fa-check-circle success-icon"></i>
+        <h2 class="success-message">Transaksi Berhasil!</h2>
+        <p>Pembayaran telah diproses</p>
+      </div>
+    </div>
+    
+    <div class="receipt-modal" id="receiptModal">
+      <div class="receipt-content">
+        <div class="modal-header">
+          <h2>Struk Pembayaran</h2>
+          <button class="close-button" id="closeReceiptBtn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="receipt-body" id="receiptBody">
+        </div>
+        
+        <div class="modal-footer">
+          <button class="action-button print-button" id="printReceiptBtn">
+            <i class="fas fa-print"></i> Cetak
+          </button>
+          <button class="action-button" id="returnToPosBtn">
+            <i class="fas fa-cash-register"></i> Kembali
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/pos/payment-success.js"></script>
+  </body>
+</html>

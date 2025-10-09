@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pembayaran - POS System</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pos/pos.css" />
+    <link rel="stylesheet" href="/pos/payment.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <nav id="sidebar" class="sidebar"></nav>
+      <main class="main-content">
+        <header class="main-header">
+          <div class="header-left">
+            <h1>Pembayaran</h1>
+            <p>Proses pembayaran transaksi</p>
+          </div>
+          <div class="header-right">
+            <div class="date-time" id="dateTime"></div>
+          </div>
+        </header>
+
+        <section class="analytics-section">
+          <div class="chart-container">
+            <div class="payment-container">
+              <div class="payment-summary">
+                <h3>Ringkasan Pembayaran</h3>
+                <div class="payment-details" id="paymentDetails"></div>
+                <div class="order-items" id="orderItems">
+                  <h4>Item yang Dibeli</h4>
+                  <div class="order-items-list" id="orderItemsList"></div>
+                </div>
+                <button class="back-to-pos-btn" id="backToPos">
+                  <i class="fas fa-arrow-left"></i> Kembali ke POS
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="top-products">
+            <div class="top-products-header">
+              <h3>Metode Pembayaran</h3>
+            </div>
+            <div class="payment-methods">
+              <div class="payment-options">
+                <button class="payment-option" data-method="cash">
+                  <i class="fas fa-money-bill-wave"></i>
+                  <span>Tunai</span>
+                </button>
+                <button class="payment-option" data-method="card">
+                  <i class="fas fa-credit-card"></i>
+                  <span>Kartu</span>
+                </button>
+                <button class="payment-option" data-method="qris">
+                  <i class="fas fa-qrcode"></i>
+                  <span>QRIS</span>
+                </button>
+                <button class="payment-option" data-method="ewallet">
+                  <i class="fas fa-mobile-alt"></i>
+                  <span>E-Wallet</span>
+                </button>
+                <button class="payment-option" data-method="split">
+                  <i class="fas fa-cut"></i>
+                  <span>Split Payment</span>
+                </button>
+                <button class="payment-option" data-method="credit">
+                  <i class="fas fa-store"></i>
+                  <span>Store Credit</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="qris-section" id="qrisSection" style="display: none">
+              <h4>Scan QRIS untuk Pembayaran</h4>
+              <div class="qris-container">
+                <img
+                  src="/images/qris.jpg"
+                  alt="QRIS Code"
+                  class="qris-image"
+                />
+              </div>
+              <p class="qris-instruction">
+                Scan QR code di atas menggunakan aplikasi e-wallet atau mobile
+                banking Anda
+              </p>
+            </div>
+
+            <div
+              class="payment-amount"
+              id="paymentInputSection"
+              style="display: none"
+            >
+              <h4>Jumlah Pembayaran</h4>
+              <div class="input-group">
+                <span>Rp</span>
+                <input type="number" id="paymentAmount" placeholder="0" />
+              </div>
+              <div class="quick-amounts">
+                <button data-amount="exact">Uang Pas</button>
+                <button data-amount="50000">Rp 50.000</button>
+                <button data-amount="100000">Rp 100.000</button>
+              </div>
+            </div>
+
+            <div class="cart-actions">
+              <button class="checkout-btn" id="processPaymentBtn" disabled>
+                <i class="fas fa-check"></i> Proses Pembayaran
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal" id="receiptModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Struk Pembayaran</h2>
+          <button class="close-btn" id="closeModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="receipt-content" id="receiptContent"></div>
+        <div class="modal-footer">
+          <button class="print-btn" id="printReceipt">
+            <i class="fas fa-print"></i> Cetak
+          </button>
+          <button class="email-btn" id="emailReceipt">
+            <i class="fas fa-envelope"></i> Email
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal" id="qrisModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Pembayaran QRIS</h2>
+          <button class="close-btn" id="closeQrisModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="qris-modal-content">
+          <p>Silakan scan QR code berikut menggunakan aplikasi e-wallet atau mobile banking Anda</p>
+          <div class="qris-container">
+            <img src="/images/qris.jpg" alt="QRIS Code" class="qris-image" />
+          </div>
+          <p class="qris-instruction">
+            Setelah pembayaran berhasil, klik tombol "OK" di bawah ini
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="primary-btn" id="qrisConfirmBtn">
+            <i class="fas fa-check"></i> OK
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/auth.js" defer></script>
+    <script src="/layout.js" defer></script>
+    <script src="/pos/payment.js" defer></script>
+  </body>
+</html>

@@ -24,148 +24,64 @@
             <div class="date-time" id="dateTime"></div>
           </div>
         </header>
-        
-        <div class="tab-content active" id="sales-tab">
-          <div class="pos-container">
-            <!-- Product Grid -->
-            <section class="product-section">
-              <div class="section-header">
-                <h2>Produk</h2>
-                <div class="search-bar">
-                  <input
-                    type="text"
-                    id="productSearch"
-                    placeholder="Cari produk..."
-                  />
-                  <i class="fas fa-search"></i>
-                </div>
-              </div>
 
-              <div class="product-grid" id="productGrid">
-                <!-- Products will be dynamically loaded here -->
+        <section class="analytics-section">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Produk</h3>
+              <div class="search-bar">
+                <input
+                  type="text"
+                  id="productSearch"
+                  placeholder="Cari produk..."
+                />
+                <i class="fas fa-search"></i>
               </div>
-            </section>
+            </div>
 
-            <!-- Cart Section -->
-            <section class="cart-section">
-              <div class="cart-header">
-                <h2>Keranjang Belanja</h2>
-                <button class="clear-cart-btn" id="clearCart">
-                  <i class="fas fa-trash"></i> Kosongkan
-                </button>
-              </div>
-
-              <div class="cart-items" id="cartItems">
-                <!-- Cart items will be dynamically added here -->
-              </div>
-
-              <div class="cart-summary">
-                <div class="summary-row">
-                  <span>Subtotal:</span>
-                  <span id="subtotal">Rp 0</span>
-                </div>
-                <div class="summary-row">
-                  <span>Diskon:</span>
-                  <span id="discount">Rp 0</span>
-                </div>
-                <div class="summary-row">
-                  <span>Pajak (10%):</span>
-                  <span id="tax">Rp 0</span>
-                </div>
-                <div class="summary-row total">
-                  <span>Total:</span>
-                  <span id="total">Rp 0</span>
-                </div>
-              </div>
-
-              <div class="cart-actions">
-                <button class="checkout-btn" id="checkoutBtn" disabled>
-                  <i class="fas fa-arrow-right"></i> Lanjut ke Pembayaran
-                </button>
-              </div>
-            </section>
+            <div class="product-grid" id="productGrid"></div>
           </div>
-        </div>
 
-        <!-- Payment Tab -->
-        <div class="tab-content" id="payment-tab">
-          <div class="payment-container">
-            <div class="payment-summary">
-              <h3>Ringkasan Pembayaran</h3>
-              <div class="payment-details" id="paymentDetails">
-                <!-- Payment details will be shown here -->
+          <div class="top-products">
+            <div class="top-products-header">
+              <h3>Keranjang Belanja</h3>
+              <button class="clear-cart-btn" id="clearCart">
+                <i class="fas fa-trash"></i> Kosongkan
+              </button>
+            </div>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-summary">
+              <div class="summary-row">
+                <span>Subtotal:</span>
+                <span id="subtotal">Rp 0</span>
+              </div>
+              <div class="summary-row">
+                <span>Diskon:</span>
+                <span id="discount">Rp 0</span>
+              </div>
+              <div class="summary-row">
+                <span>Pajak (10%):</span>
+                <span id="tax">Rp 0</span>
+              </div>
+              <div class="summary-row total">
+                <span>Total:</span>
+                <span id="total">Rp 0</span>
               </div>
             </div>
 
-            <div class="payment-methods">
-              <h3>Metode Pembayaran</h3>
-              <div class="payment-options">
-                <button class="payment-option" data-method="cash">
-                  <i class="fas fa-money-bill-wave"></i>
-                  <span>Tunai</span>
-                </button>
-                <button class="payment-option" data-method="card">
-                  <i class="fas fa-credit-card"></i>
-                  <span>Kartu</span>
-                </button>
-                <button class="payment-option" data-method="qris">
-                  <i class="fas fa-qrcode"></i>
-                  <span>QRIS</span>
-                </button>
-                <button class="payment-option" data-method="ewallet">
-                  <i class="fas fa-mobile-alt"></i>
-                  <span>E-Wallet</span>
-                </button>
-                <button class="payment-option" data-method="split">
-                  <i class="fas fa-cut"></i>
-                  <span>Split Payment</span>
-                </button>
-                <button class="payment-option" data-method="credit">
-                  <i class="fas fa-store"></i>
-                  <span>Store Credit</span>
-                </button>
-              </div>
-            </div>
-
-            <div class="payment-actions">
-              <button
-                class="process-payment-btn"
-                id="processPaymentBtn"
-                disabled
-              >
-                <i class="fas fa-check"></i> Proses Pembayaran
+            <div class="cart-actions">
+              <button class="checkout-btn" id="checkoutBtn" disabled>
+                <i class="fas fa-arrow-right"></i> Lanjut ke Pembayaran
               </button>
             </div>
           </div>
-        </div>
+        </section>
       </main>
     </div>
 
-    <!-- Receipt Modal -->
-    <div class="modal" id="receiptModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Struk Pembayaran</h2>
-          <button class="close-btn" id="closeModal">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="receipt-content" id="receiptContent">
-        </div>
-        <div class="modal-footer">
-          <button class="print-btn" id="printReceipt">
-            <i class="fas fa-print"></i> Cetak
-          </button>
-          <button class="email-btn" id="emailReceipt">
-            <i class="fas fa-envelope"></i> Email
-          </button>
-        </div>
-      </div>
-    </div>
-
     <script src="/auth.js" defer></script>
-    <script src="/products.js" defer></script>
     <script src="/layout.js" defer></script>
+    <script src="/products.js" defer></script>
     <script src="/script.js" defer></script>
     <script src="/pos/pos.js" defer></script>
   </body>
