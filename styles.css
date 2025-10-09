@@ -1267,6 +1267,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    grid-column: 1 / -1; /* span full width across the grid columns */
     margin-bottom: 30px;
 }
 
@@ -1290,109 +1291,39 @@ body {
     font-weight: 600;
 }
 
-.summary-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
+/* (Summary cards removed) */
 
 /* Allow cards to shrink and prevent them from forcing wider layouts */
-.summary-card,
 .chart-container,
 .top-products,
 .recent-transactions,
-.quick-actions {
+.chart-container,
+.top-products,
+.recent-transactions {
     min-width: 0;
 }
 
-.summary-card {
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    transition: all 0.3s ease;
-}
+/* (Summary card styles removed) */
 
-/* Ensure card contents (like charts) can't overflow their rounded containers */
-.summary-card,
+/* Ensure chart contents can't overflow their rounded containers */
 .chart-container {
     overflow: hidden;
 }
 
-.summary-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
+/* (Summary card hover removed) */
 
-.card-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: white;
-}
+/* (Card icon variants removed with summary) */
 
-.card-icon.revenue {
-    background: linear-gradient(135deg, #38a169, #2f855a);
-}
-
-.card-icon.transactions {
-    background: linear-gradient(135deg, #3182ce, #2c5aa0);
-}
-
-.card-icon.products {
-    background: linear-gradient(135deg, #805ad5, #6b46c1);
-}
-
-.card-icon.customers {
-    background: linear-gradient(135deg, #dd6b20, #c05621);
-}
-
-.card-content h3 {
-    color: #4a5568;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.card-value {
-    color: #2d3748;
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.card-change {
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-.card-change.positive {
-    color: #38a169;
-}
-
-.card-change.negative {
-    color: #e53e3e;
-}
-
-.card-change.neutral {
-    color: #718096;
-}
+/* (Card content/value/change removed with summary) */
 
 .analytics-section {
     display: grid;
     /* keep main chart flexible, but ensure right column (Top Produk / Recent Transactions)
        has a usable minimum width so it doesn't get cramped on medium screens */
     grid-template-columns: 2fr minmax(260px, 1fr);
-    gap: 30px;
-    margin-bottom: 30px;
+    gap: 24px;
+    margin-bottom: 28px;
+    grid-column: 1 / -1; /* tampil penuh di bawah header */
 }
 
 /* Give Top Produk a sensible min width so its list/items aren't squashed */
@@ -1542,6 +1473,7 @@ body {
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
+    grid-column: 1 / -1; /* lebar penuh di bawah panel utama */
 }
 
 .section-header {
@@ -1619,57 +1551,7 @@ body {
     color: #c53030;
 }
 
-.quick-actions {
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.quick-actions h3 {
-    color: #4a5568;
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.action-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.action-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 20px;
-    background: #f7fafc;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    text-decoration: none;
-    color: #4a5568;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.action-btn:hover {
-    background: #edf2f7;
-    border-color: #667eea;
-    transform: translateY(-2px);
-}
-
-.action-btn.primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-color: transparent;
-}
-
-.action-btn.primary:hover {
-    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-}
+/* (Quick actions removed) */
 
 /* Responsive Design for Dashboard */
 @media (max-width: 1024px) {
@@ -1689,20 +1571,14 @@ body {
     .analytics-section {
         grid-template-columns: 1fr;
     }
+    /* (summary-cards removed) */
 }
 
 @media (max-width: 768px) {
     .main-content {
         padding: 20px;
     }
-    
-    .summary-cards {
-        grid-template-columns: 1fr;
-    }
-    
-    .action-buttons {
-        grid-template-columns: 1fr;
-    }
+    /* (summary-cards & action-buttons removed) */
     
     .main-header {
         flex-direction: column;
@@ -1721,29 +1597,25 @@ html {
 @media (max-width: 1200px) {
     html { font-size: 15px; }
     .main-header h1 { font-size: 2.2rem; }
-    .card-value { font-size: 1.6rem; }
+    /* (card-value removed) */
 }
 
 @media (max-width: 992px) {
     html { font-size: 14px; }
     .main-header h1 { font-size: 2rem; }
-    .card-value { font-size: 1.4rem; }
-    .card-content h3 { font-size: 0.95rem; }
+    /* (card-value & card-content removed) */
 }
 
 @media (max-width: 768px) {
     html { font-size: 13px; }
     .main-header h1 { font-size: 1.6rem; }
-    .card-value { font-size: 1.2rem; }
-    .summary-card { padding: 18px; }
-    .summary-cards .card-content h3 { font-size: 0.9rem; }
+    /* (card-value & summary-card padding removed) */
 }
 
 @media (max-width: 480px) {
     html { font-size: 12px; }
     .main-header h1 { font-size: 1.4rem; }
-    .card-value { font-size: 1.05rem; }
-    .summary-card { padding: 14px; }
+    /* (card-value & summary-card padding removed) */
     .menu-item a { padding: 12px 14px; }
 }
 
@@ -2702,9 +2574,32 @@ html {
   border-color: #C53030;
 }
 
-/* Empty state row in product table */
-.product-table .empty-state {
+/* Empty state styling */
+.empty-state {
   text-align: center;
   color: #718096;
+  padding: 20px;
+  font-style: italic;
+}
+
+.product-table .empty-state {
   padding: 14px;
+}
+
+/* Dashboard two-column layout: left main (tren & top penjualan), right summary */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr minmax(280px, 1fr);
+  gap: 24px;
+  align-items: start;
+  margin-top: 12px;
+  margin-bottom: 24px;
+}
+
+/* (summary-aside removed) */
+
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr; /* stack columns on medium/mobile */
+  }
 }
