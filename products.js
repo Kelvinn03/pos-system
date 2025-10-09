@@ -266,6 +266,7 @@ class CatalogPage {
     }
     this.loadProductsFromStorage();
     this.normalizeProducts();
+    this.randomizeStocks(0, 200);
     this.filtered = [...this.products];
     this.grid = document.getElementById("catalogGrid");
     this.searchInput = document.getElementById("catalogSearch");
@@ -384,11 +385,25 @@ class CatalogPage {
     });
     this.saveProductsToStorage();
   }
+  
+  randomizeStocks(min = 0, max = 200) {
+    const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+    this.products = this.products.map((p) => {
+      const stock = rand(min, max);
+      const status = stock > 0 ? "Available" : "Out of Stock";
+      return { ...p, stock, status };
+    });
+    this.saveProductsToStorage();
+  }
 
   renderCategoryFilter() {
     if (!this.categoryFilterEl) return;
+    const counts = this.categories.reduce((acc, c) => {
+      acc[c.slug] = this.products.filter(p => p.category === c.slug).length;
+      return acc;
+    }, {});
     this.categoryFilterEl.innerHTML = this.categories
-      .map((c) => `<span class="category-chip" data-cat="${c.slug}">${c.label}</span>`)
+      .map((c) => `<span class="category-chip" data-cat="${c.slug}">${c.label} (${counts[c.slug] || 0})</span>`)
       .join("");
 
     [...this.categoryFilterEl.querySelectorAll(".category-chip")].forEach((chip) => {
@@ -538,10 +553,11 @@ class CatalogPage {
               ? this.filtered
                   .map((p) => {
                     const statusClass = p.status === "Available" ? "available" : "oos";
+                    const nameHtml = this.highlight(p.name, this.searchQuery);
                     return `
                 <tr data-id="${p.id}">
                   <td>${p.sku}</td>
-                  <td><a href="#" class="product-name" data-id="${p.id}">${p.name}</a></td>
+                  <td><a href="#" class="product-name" data-id="${p.id}">${nameHtml}</a></td>
                   <td>${p.category}</td>
                   <td>${p.stock}</td>
                   <td>${this.formatRupiah(p.price)}</td>
@@ -560,6 +576,13 @@ class CatalogPage {
           </tbody>
         </table>
       </div>`;
+  }
+
+  highlight(text, query) {
+    if (!query) return text;
+    const esc = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(esc, 'gi');
+    return String(text).replace(re, (m) => `<mark>${m}</mark>`);
   }
 
   openDetail(product) {
@@ -606,6 +629,11 @@ class CatalogPage {
     q("formDescription").value = editing ? (product.description || "") : "";
     q("formVariants").value = editing ? (product.variants || []).join(", ") : "";
     this.productFormModal.style.display = "block";
+    
+    const overlayClose = (e) => { if (e.target === this.productFormModal) this.closeForm(); };
+    const escClose = (e) => { if (e.key === 'Escape') this.closeForm(); };
+    this.productFormModal.addEventListener('click', overlayClose, { once: true });
+    document.addEventListener('keydown', escClose, { once: true });
   }
 
   closeForm() {
@@ -632,6 +660,16 @@ class CatalogPage {
 
     if (!name) return alert("Nama produk wajib diisi");
     if (!sku) return alert("SKU wajib diisi");
+    if (!Number.isFinite(price) || price <= 0) return alert("Harga harus lebih dari 0");
+    if (discountPrice !== null && (!Number.isFinite(discountPrice) || discountPrice <= 0)) {
+      return alert("Harga diskon tidak valid");
+    }
+    if (discountPrice !== null && discountPrice >= price) {
+      return alert("Harga diskon harus lebih kecil dari harga");
+    }
+    if (image) {
+      try { new URL(image); } catch (_) { return alert("URL gambar tidak valid"); }
+    }
 
     if (editingId) {
       const id = Number(editingId);

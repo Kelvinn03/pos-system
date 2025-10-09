@@ -45,30 +45,6 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="/transactions.html">
-                        <i class="fas fa-receipt"></i>
-                        <span>Transaksi</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="/inventory.html">
-                        <i class="fas fa-warehouse"></i>
-                        <span>Inventori</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="/reports.html">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Laporan</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="/settings.html">
-                        <i class="fas fa-cog"></i>
-                        <span>Pengaturan</span>
-                    </a>
-                </li>
-                <li class="menu-item">
                     <a href="/contact.html">
                         <i class="fas fa-envelope"></i>
                         <span>Contact Us</span>
@@ -110,6 +86,26 @@
                 </div>
             </header>
 
+            <section class="summary-cards" aria-label="Ringkasan KPI">
+                <div class="summary-card">
+                    <div class="summary-label">Total Pendapatan</div>
+                    <div class="summary-value" id="kpiTotalRevenue">Rp 0</div>
+                    <div class="summary-change" id="kpiRevenueChange">&nbsp;</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Total Transaksi</div>
+                    <div class="summary-value" id="kpiTotalTransactions">0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Rata-rata/Transaksi</div>
+                    <div class="summary-value" id="kpiAvgPerTransaction">Rp 0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Produk Terjual</div>
+                    <div class="summary-value" id="kpiItemsSold">0</div>
+                </div>
+            </section>
+
             <section class="analytics-section">
                 <div class="chart-container">
                     <div class="chart-header">
@@ -135,7 +131,6 @@
             <section class="recent-transactions">
                 <div class="section-header">
                     <h3>Transaksi Terakhir</h3>
-                    <a href="/transactions.html" class="view-all">Lihat Semua</a>
                 </div>
                 <div class="transactions-table">
                     <table>
