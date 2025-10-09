@@ -12,12 +12,8 @@
     />
   </head>
   <body>
-
     <div class="dashboard-container">
-      <!-- Sidebar Navigation -->
       <nav id="sidebar" class="sidebar"></nav>
-
-      <!-- Main Content -->
       <main class="main-content">
         <header class="main-header">
           <div class="header-left">
@@ -28,18 +24,7 @@
             <div class="date-time" id="dateTime"></div>
           </div>
         </header>
-
-        <!-- POS Tabs -->
-        <div class="pos-tabs">
-          <button class="tab-btn active" data-tab="sales">
-            <i class="fas fa-shopping-cart"></i> Penjualan
-          </button>
-          <button class="tab-btn" data-tab="payment">
-            <i class="fas fa-credit-card"></i> Pembayaran
-          </button>
-        </div>
-
-        <!-- Sales Tab -->
+        
         <div class="tab-content active" id="sales-tab">
           <div class="pos-container">
             <!-- Product Grid -->
@@ -153,8 +138,6 @@
             </div>
           </div>
         </div>
-
-
       </main>
     </div>
 
@@ -168,7 +151,6 @@
           </button>
         </div>
         <div class="receipt-content" id="receiptContent">
-          <!-- Receipt content will be generated here -->
         </div>
         <div class="modal-footer">
           <button class="print-btn" id="printReceipt">
@@ -181,8 +163,10 @@
       </div>
     </div>
 
-    <script src="/auth.js"></script>
-    <script src="/pos/pos.js"></script>
-    <script src="/layout.js"></script>
+    <script src="/auth.js" defer></script>
+    <script src="/products.js" defer></script>
+    <script src="/layout.js" defer></script>
+    <script src="/script.js" defer></script>
+    <script src="/pos/pos.js" defer></script>
   </body>
 </html>

@@ -1,4 +1,9 @@
 //#region layout for sidebar navigation
+
+const session =
+  localStorage.getItem("posSession") || sessionStorage.getItem("posSession");
+const userData = JSON.parse(session);
+
 const sidebar = document.getElementById("sidebar");
 const currentUrl = window.location.pathname;
 sidebar.innerHTML = `
@@ -49,7 +54,7 @@ sidebar.innerHTML = `
                 <i class="fas fa-user"></i>
             </div>
             <div class="user-details">
-                <span class="user-name" id="userName">John Doe</span>
+                <span class="user-name" id="userName">${userData.fullName || "User"}</span>
                 <span class="user-role">Admin</span>
             </div>
         </div>
@@ -59,4 +64,5 @@ sidebar.innerHTML = `
         </button>
     </div>
 `;
+
 //#endregion layout for sidebar navigation

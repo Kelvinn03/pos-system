@@ -7,7 +7,6 @@ class Dashboard {
   }
 
   init() {
-    this.setUserNameFromSession();
     this.updateDateTime();
     setInterval(() => this.updateDateTime(), 1000);
     this.renderSummaryKpi();
@@ -107,17 +106,6 @@ class Dashboard {
         <td>${this.formatDate(t.date || new Date())}</td>
       </tr>
     `).join('');
-  }
-
-  setUserNameFromSession() {
-    try {
-      const sessionRaw = localStorage.getItem('posSession') || sessionStorage.getItem('posSession');
-      const userNameEl = document.getElementById('userName');
-      if (sessionRaw && userNameEl) {
-        const s = JSON.parse(sessionRaw);
-        if (s?.name) userNameEl.textContent = s.name;
-      }
-    } catch (_) {}
   }
 
   updateDateTime() {
