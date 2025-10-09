@@ -334,6 +334,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Check if user is already logged in
 function checkAuth() {
+    const urlAuthDisabled = new URLSearchParams(window.location.search).get('authDisabled') === 'true';
+    const authDisabled = (window.AUTH_DISABLED === true) || (localStorage.getItem('authDisabled') === 'true') || urlAuthDisabled;
+    if (authDisabled) {
+        return; // Skip auth redirects when disabled
+    }
     const session = localStorage.getItem('posSession') || sessionStorage.getItem('posSession');
     if (session && window.location.pathname.includes('login.html')) {
         window.location.href = 'dashboard.html';
