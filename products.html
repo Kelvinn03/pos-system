@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produk & Katalog - POS System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta name="description" content="Katalog produk dengan gambar, harga, dan detail.">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-cash-register"></i> POS System</h2>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a href="dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="pos.html">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Kasir / POS</span>
+                    </a>
+                </li>
+                <li class="menu-item active">
+                    <a href="products.html">
+                        <i class="fas fa-box"></i>
+                        <span>Produk & Katalog</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="transactions.html">
+                        <i class="fas fa-receipt"></i>
+                        <span>Transaksi</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="inventory.html">
+                        <i class="fas fa-warehouse"></i>
+                        <span>Inventori</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="reports.html">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Laporan</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span>Pengaturan</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="contact.html">
+                        <i class="fas fa-envelope"></i>
+                        <span>Contact Us</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="support.html">
+                        <i class="fas fa-life-ring"></i>
+                        <span>Support Center</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name" id="userName">John Doe</span>
+                        <span class="user-role">Admin</span>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </nav>
+
+        <main class="main-content catalog-layout">
+            <header class="main-header">
+                <div class="header-left">
+                    <h1>Produk & Katalog</h1>
+                    <p>Jelajahi produk dengan tampilan modern dan responsif</p>
+                </div>
+                <div class="header-right">
+                    <div class="date-time" id="dateTime"></div>
+                </div>
+            </header>
+
+            <section class="product-section">
+                <div class="section-header">
+                    <h2>Daftar Produk</h2>
+                    <div class="search-bar">
+                        <input type="text" id="catalogSearch" placeholder="Cari produk...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <button class="btn primary" id="addProductBtn"><i class="fas fa-plus"></i> Tambah Produk</button>
+                </div>
+
+                <div class="category-filter" id="categoryFilter">
+                </div>
+
+                <div class="product-grid" id="catalogGrid">
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal" id="productDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detailTitle">Detail Produk</h2>
+                <button class="close-btn" id="closeDetailModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="product-detail-content" id="productDetailContent"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="productFormModal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="productFormTitle">Tambah Produk</h2>
+                <button class="close-btn" id="closeProductFormModal"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="productForm" class="product-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="formSku">SKU</label>
+                        <input type="text" id="formSku" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formName">Nama</label>
+                        <input type="text" id="formName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formCategory">Kategori</label>
+                        <select id="formCategory">
+                            <option value="food">Food</option>
+                            <option value="fresh-drinks">Fresh Drinks</option>
+                            <option value="snacks">Snacks</option>
+                            <option value="cake">Cake</option>
+                            <option value="juice">Juice</option>
+                            <option value="burger">Burger</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formStock">Stok</label>
+                        <input type="number" id="formStock" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="formPrice">Harga</label>
+                        <input type="number" id="formPrice" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="formDiscountPrice">Harga Diskon</label>
+                        <input type="number" id="formDiscountPrice" min="0" placeholder="opsional">
+                    </div>
+                    <div class="form-group">
+                        <label for="formHpp">HPP</label>
+                        <input type="number" id="formHpp" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="formStatus">Status</label>
+                        <select id="formStatus">
+                            <option value="Available">Available</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formImage">Gambar (URL)</label>
+                        <input type="url" id="formImage" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label for="formDescription">Deskripsi</label>
+                        <textarea id="formDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="formVariants">Varian (pisahkan dengan koma)</label>
+                        <input type="text" id="formVariants" placeholder="contoh: besar, pedas">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn"><i class="fas fa-save"></i> Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="auth.js" defer></script>
+    <script src="products.js" defer></script>
+</body>
+</html>
