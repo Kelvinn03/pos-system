@@ -10,6 +10,7 @@ class Dashboard {
     this.setUserNameFromSession();
     this.updateDateTime();
     setInterval(() => this.updateDateTime(), 1000);
+    this.renderSummaryKpi();
     this.renderTopProducts();
     this.renderRecentTransactions();
     this.bindChartControls();
@@ -192,15 +193,56 @@ class Dashboard {
     this.drawBarChart(ctx, labels, values, { width: rect.width, height: heightCss });
   }
 
+  renderSummaryKpi() {
+    const tx = this.transactions || [];
+    const sum = (arr) => arr.reduce((a, b) => a + b, 0);
+    const totalRevenue = sum(tx.map(t => (t.total || 0)));
+    const totalTransactions = tx.length;
+    const avgPerTx = totalTransactions ? totalRevenue / totalTransactions : 0;
+    const itemsSold = sum(tx.map(t => (t.itemsCount || 0)));
+
+    const elRevenue = document.getElementById('kpiTotalRevenue');
+    const elTx = document.getElementById('kpiTotalTransactions');
+    const elAvg = document.getElementById('kpiAvgPerTransaction');
+    const elItems = document.getElementById('kpiItemsSold');
+    const elChange = document.getElementById('kpiRevenueChange');
+
+    if (elRevenue) elRevenue.textContent = this.formatRupiah(totalRevenue);
+    if (elTx) elTx.textContent = String(totalTransactions);
+    if (elAvg) elAvg.textContent = this.formatRupiah(avgPerTx);
+    if (elItems) elItems.textContent = String(itemsSold);
+    
+    const dayData = this.getChartData('day');
+    const vals = dayData.values || [];
+    const last = vals[vals.length - 1] || 0;
+    const prev = vals[vals.length - 2] || 0;
+    const pct = prev ? Math.round(((last - prev) / prev) * 100) : 0;
+    if (elChange) {
+      const up = pct >= 0;
+      elChange.textContent = `${up ? '↑' : '↓'} ${Math.abs(pct)}% vs hari sebelumnya`;
+      elChange.classList.toggle('down', !up);
+    }
+  }
+
   drawBarChart(ctx, labels, values, opts = {}) {
     const { width = 600, height = 280 } = opts;
     ctx.clearRect(0, 0, width, height);
 
-    const pad = { t: 16, r: 16, b: 40, l: 40 };
+    const pad = { t: 16, r: 16, b: 28, l: 48 };
     const chartW = width - pad.l - pad.r;
     const chartH = height - pad.t - pad.b;
 
     const maxVal = Math.max(1, ...values);
+    const niceMax = (val) => {
+      const exp = Math.floor(Math.log10(val));
+      const base = Math.pow(10, exp);
+      const f = val / base;
+      let n;
+      if (f <= 1) n = 1; else if (f <= 2) n = 2; else if (f <= 5) n = 5; else n = 10;
+      return n * base;
+    };
+    const axisMax = niceMax(maxVal);
+
     const barCount = values.length;
     const barGap = 10;
     const barW = Math.max(12, (chartW - barGap * (barCount - 1)) / barCount);
@@ -213,9 +255,28 @@ class Dashboard {
     ctx.lineTo(pad.l + chartW, pad.t + chartH);
     ctx.stroke();
 
+    ctx.setLineDash([4, 4]);
+    [0.25, 0.5, 0.75, 1].forEach((p) => {
+      const y = pad.t + chartH - p * chartH;
+      ctx.beginPath();
+      ctx.moveTo(pad.l, y + 0.5);
+      ctx.lineTo(pad.l + chartW, y + 0.5);
+      ctx.stroke();
+      
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#718096';
+      ctx.font = '12px Segoe UI';
+      ctx.textAlign = 'right';
+      const val = Math.round(p * axisMax);
+      const label = this.formatShortRupiah(val);
+      ctx.fillText(label, pad.l - 8, y - 2);
+      ctx.setLineDash([4, 4]);
+    });
+    ctx.setLineDash([]);
+
     values.forEach((v, i) => {
       const x = pad.l + i * (barW + barGap);
-      const h = (v / maxVal) * (chartH - 6);
+      const h = Math.max(2, (v / axisMax) * chartH);
       const y = pad.t + chartH - h;
       const grad = ctx.createLinearGradient(0, y, 0, y + h);
       grad.addColorStop(0, '#667eea');
@@ -234,7 +295,7 @@ class Dashboard {
     ctx.textAlign = 'center';
     labels.forEach((lbl, i) => {
       const x = pad.l + i * (barW + barGap) + barW / 2;
-      ctx.fillText(lbl, x, pad.t + chartH + 16);
+      ctx.fillText(lbl, x, pad.t + chartH + 14);
     });
   }
 }
