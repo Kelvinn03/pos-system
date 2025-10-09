@@ -1269,6 +1269,7 @@ body {
     align-items: center;
     grid-column: 1 / -1; /* span full width across the grid columns */
     margin-bottom: 30px;
+    height: min-content;
 }
 
 .main-header h1 {
