@@ -859,7 +859,7 @@ body {
     background: #a8a8a8;
 }
 
-/* Authentication Styles */
+/* Authentication Styles - Complete Fixed Version */
 .auth-body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
@@ -936,26 +936,30 @@ body {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
-.input-group i {
+.input-group > i:first-of-type {
     position: absolute;
     left: 18px;
     color: #a0aec0;
     z-index: 2;
-    pointer-events: none; /* allow clicks through decorative icon */
+    pointer-events: none;
+    font-size: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .input-group input,
 .input-group select {
     width: 100%;
-    /* left padding keeps text clear of left icon; right padding reduced since eye button is hidden */
-    padding: 15px 18px 15px 48px;
+    padding: 15px 50px 15px 50px;
     border: 2px solid #e2e8f0;
     border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s ease;
     background: #f7fafc;
+    box-sizing: border-box;
 }
 
 .input-group input:focus,
@@ -966,14 +970,37 @@ body {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+/* Password toggle button - CRITICAL FIX */
 .toggle-password {
-    /* hide the eye toggle when not needed */
-    display: none;
-    pointer-events: none;
+    position: absolute !important;
+    right: 15px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: none !important;
+    border: none !important;
+    color: #a0aec0 !important;
+    cursor: pointer !important;
+    padding: 8px !important;
+    transition: color 0.3s ease;
+    z-index: 10 !important;
+    font-size: 1rem !important;
+    width: 32px !important;
+    height: 32px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .toggle-password:hover {
-    color: #667eea;
+    color: #667eea !important;
+    background: rgba(102, 126, 234, 0.1) !important;
+    border-radius: 6px !important;
+}
+
+.toggle-password i {
+    pointer-events: none;
 }
 
 .password-strength {
@@ -1003,6 +1030,8 @@ body {
     justify-content: space-between;
     align-items: center;
     margin: 10px 0;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .checkbox-label {
@@ -1025,6 +1054,7 @@ body {
     border-radius: 4px;
     position: relative;
     transition: all 0.3s ease;
+    flex-shrink: 0;
 }
 
 .checkbox-label input[type="checkbox"]:checked + .checkmark {
@@ -1091,6 +1121,16 @@ body {
     font-size: 0.9rem;
 }
 
+.auth-footer a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
 .auth-message {
     padding: 15px;
     border-radius: 10px;
@@ -1125,13 +1165,26 @@ body {
     border: 1px solid #feb2b2;
 }
 
-/* Dashboard Styles */
-.dashboard-container {
-    display: flex;
-    min-height: 100vh;
-    background: #f7fafc;
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 30px 20px;
+    }
+    
+    .auth-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .input-group input,
+    .input-group select {
+        font-size: 0.95rem;
+        padding: 13px 45px 13px 45px;
+    }
+    
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
-
 /* Prevent horizontal overflow from dashboard children and make layout shrink-friendly */
 .dashboard-container {
     overflow-x: hidden;
