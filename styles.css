@@ -2376,6 +2376,14 @@ html {
     margin-bottom: 30px;
 }
 
+.support-box {
+    display: grid;
+    flex-direction: row;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
 .contact-info {
     display: flex;
     flex-direction: column;

@@ -123,100 +123,103 @@
                 </section>
 
                 <!-- Message Box Section -->
-                <section class="message-section">
-                    <h2>Kirim Pesan Support</h2>
-                    <div class="message-form-card">
-                        <form class="support-form" id="supportForm">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="supportName">Nama</label>
-                                    <input type="text" id="supportName" name="name" required>
+                 <div class="support-box">
+                    <section class="message-section">
+                        <h2>Kirim Pesan Support</h2>
+                        <div class="message-form-card">
+                            <form class="support-form" id="supportForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="supportName">Nama</label>
+                                        <input type="text" id="supportName" name="name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="supportEmail">Email</label>
+                                        <input type="email" id="supportEmail" name="email" required>
+                                    </div>
                                 </div>
+                                
                                 <div class="form-group">
-                                    <label for="supportEmail">Email</label>
-                                    <input type="email" id="supportEmail" name="email" required>
+                                    <label for="supportSubject">Subjek</label>
+                                    <select id="supportSubject" name="subject" required>
+                                        <option value="">Pilih subjek</option>
+                                        <option value="technical">Masalah Teknis</option>
+                                        <option value="feature">Permintaan Fitur</option>
+                                        <option value="bug">Laporan Bug</option>
+                                        <option value="training">Permintaan Training</option>
+                                        <option value="billing">Masalah Billing</option>
+                                        <option value="other">Lainnya</option>
+                                    </select>
                                 </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="supportSubject">Subjek</label>
-                                <select id="supportSubject" name="subject" required>
-                                    <option value="">Pilih subjek</option>
-                                    <option value="technical">Masalah Teknis</option>
-                                    <option value="feature">Permintaan Fitur</option>
-                                    <option value="bug">Laporan Bug</option>
-                                    <option value="training">Permintaan Training</option>
-                                    <option value="billing">Masalah Billing</option>
-                                    <option value="other">Lainnya</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="supportPriority">Prioritas</label>
-                                <select id="supportPriority" name="priority" required>
-                                    <option value="low">Rendah</option>
-                                    <option value="medium" selected>Sedang</option>
-                                    <option value="high">Tinggi</option>
-                                    <option value="urgent">Mendesak</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="supportMessage">Pesan</label>
-                                <textarea id="supportMessage" name="message" rows="6" required placeholder="Jelaskan masalah atau permintaan Anda secara detail..."></textarea>
-                            </div>
-                            
-                            <button type="submit" class="submit-btn">
-                                <i class="fas fa-paper-plane"></i> Kirim Pesan Support
-                            </button>
-                        </form>
-                    </div>
-                </section>
+                                
+                                <div class="form-group">
+                                    <label for="supportPriority">Prioritas</label>
+                                    <select id="supportPriority" name="priority" required>
+                                        <option value="low">Rendah</option>
+                                        <option value="medium" selected>Sedang</option>
+                                        <option value="high">Tinggi</option>
+                                        <option value="urgent">Mendesak</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="supportMessage">Pesan</label>
+                                    <textarea id="supportMessage" name="message" rows="6" required placeholder="Jelaskan masalah atau permintaan Anda secara detail..."></textarea>
+                                </div>
+                                
+                                <button type="submit" class="submit-btn">
+                                    <i class="fas fa-paper-plane"></i> Kirim Pesan Support
+                                </button>
+                            </form>
+                        </div>
+                    </section>
 
-                <!-- Feedback Section -->
-                <section class="feedback-section">
-                    <h2>Feedback & Saran</h2>
-                    <div class="feedback-form-card">
-                        <form class="feedback-form" id="feedbackForm">
-                            <div class="form-group">
-                                <label for="feedbackRating">Rating Sistem</label>
-                                <div class="rating-input">
-                                    <input type="radio" id="star5" name="rating" value="5">
-                                    <label for="star5"><i class="fas fa-star"></i></label>
-                                    <input type="radio" id="star4" name="rating" value="4">
-                                    <label for="star4"><i class="fas fa-star"></i></label>
-                                    <input type="radio" id="star3" name="rating" value="3">
-                                    <label for="star3"><i class="fas fa-star"></i></label>
-                                    <input type="radio" id="star2" name="rating" value="2">
-                                    <label for="star2"><i class="fas fa-star"></i></label>
-                                    <input type="radio" id="star1" name="rating" value="1">
-                                    <label for="star1"><i class="fas fa-star"></i></label>
+                    <!-- Feedback Section -->
+                    <section class="feedback-section">
+                        <h2>Feedback & Saran</h2>
+                        <div class="feedback-form-card">
+                            <form class="feedback-form" id="feedbackForm">
+                                <div class="form-group">
+                                    <label for="feedbackRating">Rating Sistem</label>
+                                    <div class="rating-input">
+                                        <input type="radio" id="star5" name="rating" value="5">
+                                        <label for="star5"><i class="fas fa-star"></i></label>
+                                        <input type="radio" id="star4" name="rating" value="4">
+                                        <label for="star4"><i class="fas fa-star"></i></label>
+                                        <input type="radio" id="star3" name="rating" value="3">
+                                        <label for="star3"><i class="fas fa-star"></i></label>
+                                        <input type="radio" id="star2" name="rating" value="2">
+                                        <label for="star2"><i class="fas fa-star"></i></label>
+                                        <input type="radio" id="star1" name="rating" value="1">
+                                        <label for="star1"><i class="fas fa-star"></i></label>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="feedbackCategory">Kategori Feedback</label>
-                                <select id="feedbackCategory" name="category" required>
-                                    <option value="">Pilih kategori</option>
-                                    <option value="ui">User Interface</option>
-                                    <option value="performance">Performance</option>
-                                    <option value="features">Fitur</option>
-                                    <option value="usability">Kemudahan Penggunaan</option>
-                                    <option value="support">Dukungan</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="feedbackMessage">Feedback & Saran</label>
-                                <textarea id="feedbackMessage" name="message" rows="5" required placeholder="Bagikan feedback dan saran Anda untuk perbaikan sistem..."></textarea>
-                            </div>
-                            
-                            <button type="submit" class="submit-btn">
-                                <i class="fas fa-thumbs-up"></i> Kirim Feedback
-                            </button>
-                        </form>
-                    </div>
-                </section>
+                                
+                                <div class="form-group">
+                                    <label for="feedbackCategory">Kategori Feedback</label>
+                                    <select id="feedbackCategory" name="category" required>
+                                        <option value="">Pilih kategori</option>
+                                        <option value="ui">User Interface</option>
+                                        <option value="performance">Performance</option>
+                                        <option value="features">Fitur</option>
+                                        <option value="usability">Kemudahan Penggunaan</option>
+                                        <option value="support">Dukungan</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="feedbackMessage">Feedback & Saran</label>
+                                    <textarea id="feedbackMessage" name="message" rows="5" required placeholder="Bagikan feedback dan saran Anda untuk perbaikan sistem..."></textarea>
+                                </div>
+                                
+                                <button type="submit" class="submit-btn">
+                                    <i class="fas fa-thumbs-up"></i> Kirim Feedback
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+                <div>
+
             </div>
         </main>
     </div>
