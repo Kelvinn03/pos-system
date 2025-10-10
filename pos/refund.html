@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Refund - POS System</title>
-    <link rel="stylesheet" href="/styles.css" />
-    <link rel="stylesheet" href="/refund.css" />
+  <title>Refund - POS System</title>
+  <link rel="stylesheet" href="/styles.css" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
@@ -22,91 +21,61 @@
       }
     </script>
 
-    <div class="dashboard-container">
-      <nav class="sidebar">
-        <div class="sidebar-header">
-          <h2><i class="fas fa-cash-register"></i> POS System</h2>
-        </div>
+  <div class="dashboard-container">
+    <nav id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <h2><i class="fas fa-cash-register"></i> POS System</h2>
+    </div>
 
-        <ul class="sidebar-menu">
-          <li class="menu-item">
-            <a href="/dashboard.html">
-              <i class="fas fa-tachometer-alt"></i>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/pos/pos.html">
-              <i class="fas fa-shopping-cart"></i>
-              <span>Kasir / POS</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/products.html">
-              <i class="fas fa-box"></i>
-              <span>Produk & Katalog</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/transactions.html">
-              <i class="fas fa-receipt"></i>
-              <span>Transaksi</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/inventory.html">
-              <i class="fas fa-warehouse"></i>
-              <span>Inventori</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/reports.html">
-              <i class="fas fa-chart-bar"></i>
-              <span>Laporan</span>
-            </a>
-          </li>
-          <li class="menu-item active">
-            <a href="/pos/refund.html">
-              <i class="fas fa-undo"></i>
-              <span>Refund</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/settings.html">
-              <i class="fas fa-cog"></i>
-              <span>Pengaturan</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/contact.html">
-              <i class="fas fa-envelope"></i>
-              <span>Contact Us</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/support.html">
-              <i class="fas fa-life-ring"></i>
-              <span>Support Center</span>
-            </a>
-          </li>
-        </ul>
-
-        <div class="sidebar-footer">
-          <div class="user-info">
-            <div class="user-avatar">
-              <i class="fas fa-user"></i>
-            </div>
-            <div class="user-details">
-              <span class="user-name" id="userName">John Doe</span>
-              <span class="user-role">Admin</span>
-            </div>
-          </div>
-          <button class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i>
-            Logout
-          </button>
+    <ul class="sidebar-menu">
+      <li class="menu-item">
+        <a href="/dashboard.html">
+          <i class="fas fa-tachometer-alt"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="menu-item active">
+        <a href="/pos/pos.html">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Kasir / POS</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="/products.html">
+          <i class="fas fa-box"></i>
+          <span>Produk & Katalog</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="/contact.html">
+          <i class="fas fa-envelope"></i>
+          <span>Contact Us</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="/support.html">
+          <i class="fas fa-life-ring"></i>
+          <span>Support Center</span>
+        </a>
+      </li>
+    </ul>
+        
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="fas fa-user"></i>
         </div>
-      </nav>
+        <div class="user-details">
+          <span class="user-name" id="userName">User</span>
+          <span class="user-role">Admin</span>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </button>
+    </div>
+    </nav>
 
       <main class="main-content">
         <header class="main-header">
@@ -119,60 +88,65 @@
           </div>
         </header>
 
-        <div class="refund-page-container">
-          <div class="refund-search-section">
-            <div class="refund-search">
-              <h3>Cari Transaksi</h3>
-              <div class="search-transaction">
-                <input
-                  type="text"
-                  id="transactionSearch"
-                  placeholder="Masukkan ID transaksi atau nama pelanggan..."
-                />
-                <button class="search-btn" id="searchTransactionBtn">
-                  <i class="fas fa-search"></i> Cari
-                </button>
+        <!-- Tabs placed outside and above all refund content -->
+        <div class="pos-tabs" role="tablist" aria-label="POS Tabs">
+          <a href="/pos/pos.html" class="tab" role="tab">Jual &amp; Bayar</a>
+          <a href="/pos/refund.html" class="tab active" role="tab" aria-selected="true">Refund</a>
+        </div>
+
+        <section class="analytics-section">
+          <!-- Left column: refund results and item selection -->
+          <div class="chart-container">
+            <div class="card-inner">
+              <div class="refund-results" id="refundResults"></div>
+
+              <div class="refund-items-section" id="refundItems" style="display: none">
+                <h3>Pilih Item untuk Refund</h3>
+                <div class="refund-items-list" id="refundItemsList"></div>
+
+                <div class="refund-summary" id="refundSummary" style="display: none">
+                  <h4>Ringkasan Refund</h4>
+                  <div class="refund-summary-content" id="refundSummaryContent"></div>
+                </div>
+
+                <div class="refund-actions">
+                  <button class="process-refund-btn" id="processRefundBtn" disabled>
+                    <i class="fas fa-undo"></i> Proses Refund
+                  </button>
+                  <button class="cancel-refund-btn" id="cancelRefundBtn">
+                    <i class="fas fa-times"></i> Batal
+                  </button>
+                </div>
               </div>
             </div>
-
-            <div class="refund-results" id="refundResults"></div>
           </div>
 
-          <div
-            class="refund-items-section"
-            id="refundItems"
-            style="display: none"
-          >
-            <h3>Pilih Item untuk Refund</h3>
-            <div class="refund-items-list" id="refundItemsList"></div>
+          <!-- Right column: search card and recent refunds -->
+          <div class="top-products">
+            <div class="card-inner">
+              <div class="refund-search-section">
+              <div class="refund-search">
+                <h3>Cari Transaksi</h3>
+                <div class="search-transaction">
+                  <input
+                    type="text"
+                    id="transactionSearch"
+                    placeholder="Masukkan ID transaksi atau nama pelanggan..."
+                  />
+                  <button type="button" class="search-btn" id="searchTransactionBtn" onclick="(window.refundSystem || { searchTransaction: () => {} }).searchTransaction()">
+                    <i class="fas fa-search"></i> Cari
+                  </button>
+                </div>
+              </div>
 
-            <div
-              class="refund-summary"
-              id="refundSummary"
-              style="display: none"
-            >
-              <h4>Ringkasan Refund</h4>
-              <div
-                class="refund-summary-content"
-                id="refundSummaryContent"
-              ></div>
-            </div>
-
-            <div class="refund-actions">
-              <button class="process-refund-btn" id="processRefundBtn" disabled>
-                <i class="fas fa-undo"></i> Proses Refund
-              </button>
-              <button class="cancel-refund-btn" id="cancelRefundBtn">
-                <i class="fas fa-times"></i> Batal
-              </button>
+              <div class="recent-refunds-section">
+                <h3>Refund Terbaru</h3>
+                <div class="recent-refunds-list" id="recentRefundsList"></div>
+              </div>
+              </div>
             </div>
           </div>
-
-          <div class="recent-refunds-section">
-            <h3>Refund Terbaru</h3>
-            <div class="recent-refunds-list" id="recentRefundsList"></div>
-          </div>
-        </div>
+        </section>
       </main>
     </div>
 
@@ -217,6 +191,41 @@
     </div>
 
     <script src="/auth.js"></script>
-    <script src="/refund.js"></script>
+    <script src="/layout.js" defer></script>
+    <script src="/script.js" defer></script>
+    <script src="/pos/refund.js"></script>
+    <script>
+      // Hide left column when there is no content (no results and refund items hidden)
+      (function() {
+        const chart = document.querySelector('.chart-container');
+        const results = document.getElementById('refundResults');
+        const items = document.getElementById('refundItems');
+
+        function updateChartVisibility() {
+          const hasResults = results && results.innerHTML.trim().length > 0;
+          const itemsVisible = items && items.style.display !== 'none' && items.offsetHeight > 0;
+          if (!hasResults && !itemsVisible) {
+            chart && chart.classList.add('empty');
+          } else {
+            chart && chart.classList.remove('empty');
+          }
+        }
+
+        // Initial check
+        document.addEventListener('DOMContentLoaded', updateChartVisibility);
+
+        // Observe changes to results and items
+        if (results) {
+          const obs = new MutationObserver(updateChartVisibility);
+          obs.observe(results, { childList: true, subtree: true, characterData: true });
+        }
+
+        // Also observe style changes on items (in case script toggles display)
+        if (items) {
+          const obs2 = new MutationObserver(updateChartVisibility);
+          obs2.observe(items, { attributes: true, attributeFilter: ['style'] });
+        }
+      })();
+    </script>
   </body>
 </html>

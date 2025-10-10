@@ -272,6 +272,12 @@ class PaymentSystem {
 
       transactions.push(transaction);
       localStorage.setItem("posTransactions", JSON.stringify(transactions));
+      // Save last transaction id so other pages (e.g., refund) can reference it
+      try {
+        localStorage.setItem('posLastTransactionId', transactionId);
+      } catch (e) {
+        console.warn('Could not save last transaction id', e);
+      }
       localStorage.removeItem("posCurrentCart");
     } catch (e) {
       console.error("Error saving transaction", e);
