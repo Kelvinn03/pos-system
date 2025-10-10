@@ -7,20 +7,17 @@ class AuthSystem {
     }
 
     init() {
+        this.setupEventListeners();
         this.loadStoredUsers();
         this.ensureDemoUser();
-        this.setupEventListeners();
     }
 
     ensureDemoUser() {
-        // Always ensure demo user exists
-        const demoExists = this.users.find(u => u.email === 'demo@possystem.com');
-        if (!demoExists) {
+        if (this.users.length === 0) {
             this.users.push({
                 id: 1,
                 fullName: 'Demo User',
                 email: 'demo@possystem.com',
-                username: 'demo',
                 birthDate: '1990-01-01',
                 password: 'demo123',
                 securityQuestion: 'color',
@@ -28,9 +25,7 @@ class AuthSystem {
                 createdAt: new Date().toISOString()
             });
             this.saveUsers();
-            console.log('Demo user created successfully');
         }
-        console.log('Total users:', this.users.length);
     }
 
     setupEventListeners() {
@@ -55,76 +50,45 @@ class AuthSystem {
             passwordInput.addEventListener('input', () => this.checkPasswordStrength());
         }
 
-        // Setup password toggles after a short delay to ensure DOM is ready
-        setTimeout(() => this.setupPasswordToggles(), 100);
+        this.setupPasswordToggles();
     }
 
     setupPasswordToggles() {
-        // Find all toggle buttons
-        document.querySelectorAll('.toggle-password').forEach(button => {
-            // Make sure button is visible
+        const toggleButtons = document.querySelectorAll('.toggle-password');
+        toggleButtons.forEach(button => {
             button.style.display = 'flex';
-            button.style.position = 'absolute';
-            button.style.right = '15px';
-            button.style.zIndex = '10';
-            
-            // Remove any existing listeners
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-            
-            // Add new click listener
-            newButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // Find the input field (previous sibling)
-                const inputGroup = this.closest('.input-group');
-                const input = inputGroup ? inputGroup.querySelector('input[type="password"], input[type="text"]') : null;
+            button.addEventListener('click', function() {
+                const input = this.previousElementSibling;
                 const icon = this.querySelector('i');
                 
-                if (input) {
+                if (input && input.tagName === 'INPUT') {
                     if (input.type === 'password') {
                         input.type = 'text';
-                        if (icon) icon.className = 'fas fa-eye-slash';
+                        icon.className = 'fas fa-eye-slash';
                     } else {
                         input.type = 'password';
-                        if (icon) icon.className = 'fas fa-eye';
+                        icon.className = 'fas fa-eye';
                     }
                 }
             });
         });
-        
-        console.log('Password toggles setup complete');
     }
 
     loadStoredUsers() {
-        try {
-            const users = localStorage.getItem('posUsers');
-            this.users = users ? JSON.parse(users) : [];
-        } catch (e) {
-            console.error('Error loading users:', e);
-            this.users = [];
-        }
+        const users = localStorage.getItem('posUsers');
+        this.users = users ? JSON.parse(users) : [];
     }
 
     saveUsers() {
-        try {
-            localStorage.setItem('posUsers', JSON.stringify(this.users));
-            console.log('Users saved:', this.users.length);
-        } catch (e) {
-            console.error('Error saving users:', e);
-        }
+        localStorage.setItem('posUsers', JSON.stringify(this.users));
     }
 
     handleLogin(e) {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const email = formData.get('email').trim();
+        const email = formData.get('email');
         const password = formData.get('password');
         const rememberMe = document.getElementById('rememberMe')?.checked || false;
-
-        console.log('Login attempt:', email);
-        console.log('Available users:', this.users.map(u => u.email));
 
         const user = this.users.find(u => 
             (u.email === email || u.username === email) && u.password === password
@@ -150,7 +114,6 @@ class AuthSystem {
             }, 1000);
         } else {
             this.showMessage('Email/username atau password salah!', 'error');
-            console.log('Login failed - user not found or password mismatch');
         }
     }
 
@@ -282,9 +245,6 @@ class AuthSystem {
         document.getElementById('newPasswordGroup').style.display = 'block';
         document.getElementById('confirmNewPasswordGroup').style.display = 'block';
         document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Simpan Password Baru';
-        
-        // Re-setup password toggles for new fields
-        setTimeout(() => this.setupPasswordToggles(), 100);
     }
 
     getSecurityQuestionText(questionKey) {
@@ -377,29 +337,24 @@ class AuthSystem {
     }
 }
 
-// Global toggle function (backup)
 function togglePassword(inputId) {
     const input = document.getElementById(inputId);
-    if (!input) return;
-    
-    const button = input.parentElement.querySelector('.toggle-password');
-    const icon = button ? button.querySelector('i') : null;
+    const button = input.nextElementSibling;
+    const icon = button.querySelector('i');
     
     if (input.type === 'password') {
         input.type = 'text';
-        if (icon) icon.className = 'fas fa-eye-slash';
+        icon.className = 'fas fa-eye-slash';
     } else {
         input.type = 'password';
-        if (icon) icon.className = 'fas fa-eye';
+        icon.className = 'fas fa-eye';
     }
 }
 
-// Initialize authentication system
 document.addEventListener('DOMContentLoaded', () => {
     window.authSystem = new AuthSystem();
 });
 
-// Check if user is already logged in
 function checkAuth() {
     const urlAuthDisabled = new URLSearchParams(window.location.search).get('authDisabled') === 'true';
     const authDisabled = (window.AUTH_DISABLED === true) || (localStorage.getItem('authDisabled') === 'true') || urlAuthDisabled;
@@ -416,12 +371,10 @@ function checkAuth() {
     }
 }
 
-// Logout function
 function logout() {
     localStorage.removeItem('posSession');
     sessionStorage.removeItem('posSession');
     window.location.href = '/login.html';
 }
 
-// Check authentication on page load
 document.addEventListener('DOMContentLoaded', checkAuth);
