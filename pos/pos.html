@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kasir / POS - POS System</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pos/pos.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <nav id="sidebar" class="sidebar"></nav>
+      <main class="main-content">
+        <header class="main-header">
+          <div class="header-left">
+            <h1>Kasir / POS</h1>
+            <p>Halaman penjualan dan pembayaran</p>
+          </div>
+          <div class="header-right">
+            <div class="date-time" id="dateTime"></div>
+          </div>
+        </header>
+
+        <section class="analytics-section">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Produk</h3>
+              <div class="search-bar">
+                <input
+                  type="text"
+                  id="productSearch"
+                  placeholder="Cari produk..."
+                />
+                <i class="fas fa-search"></i>
+              </div>
+            </div>
+
+            <div class="product-grid" id="productGrid"></div>
+          </div>
+
+          <div class="top-products">
+            <div class="top-products-header">
+              <h3>Keranjang Belanja</h3>
+              <button class="clear-cart-btn" id="clearCart">
+                <i class="fas fa-trash"></i> Kosongkan
+              </button>
+            </div>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-summary">
+              <div class="summary-row">
+                <span>Subtotal:</span>
+                <span id="subtotal">Rp 0</span>
+              </div>
+              <div class="summary-row">
+                <span>Diskon:</span>
+                <span id="discount">Rp 0</span>
+              </div>
+              <div class="summary-row">
+                <span>Pajak (10%):</span>
+                <span id="tax">Rp 0</span>
+              </div>
+              <div class="summary-row total">
+                <span>Total:</span>
+                <span id="total">Rp 0</span>
+              </div>
+            </div>
+
+            <div class="cart-actions">
+              <button class="checkout-btn" id="checkoutBtn" disabled>
+                <i class="fas fa-arrow-right"></i> Lanjut ke Pembayaran
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/auth.js" defer></script>
+    <script src="/layout.js" defer></script>
+    <script src="/products.js" defer></script>
+    <script src="/script.js" defer></script>
+    <script src="/pos/pos.js" defer></script>
+  </body>
+</html>

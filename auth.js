@@ -75,7 +75,7 @@ class AuthSystem {
 
             this.showMessage('Login berhasil!', 'success');
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
+                window.location.href = '/dashboard.html';
             }, 1000);
         } else {
             this.showMessage('Email/username atau password salah!', 'error');
@@ -125,7 +125,7 @@ class AuthSystem {
         this.showMessage('Registrasi berhasil! Silakan login.', 'success');
         
         setTimeout(() => {
-            window.location.href = 'login.html';
+            window.location.href = '/login.html';
         }, 2000);
     }
 
@@ -199,7 +199,7 @@ class AuthSystem {
                 this.saveUsers();
                 this.showMessage('Password berhasil diubah! Silakan login.', 'success');
                 setTimeout(() => {
-                    window.location.href = 'login.html';
+                    window.location.href = '/login.html';
                 }, 2000);
             }
         }
@@ -341,11 +341,11 @@ function checkAuth() {
     }
     const session = localStorage.getItem('posSession') || sessionStorage.getItem('posSession');
     if (session && window.location.pathname.includes('login.html')) {
-        window.location.href = 'dashboard.html';
+        window.location.href = '/dashboard.html';
     } else if (!session && !window.location.pathname.includes('login.html') && 
                !window.location.pathname.includes('register.html') && 
                !window.location.pathname.includes('forgot-password.html')) {
-        window.location.href = 'login.html';
+        window.location.href = '/login.html';
     }
 }
 
@@ -353,7 +353,7 @@ function checkAuth() {
 function logout() {
     localStorage.removeItem('posSession');
     sessionStorage.removeItem('posSession');
-    window.location.href = 'login.html';
+    window.location.href = '/login.html';
 }
 
 // Check authentication on page load

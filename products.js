@@ -300,7 +300,6 @@ class CatalogPage {
     this.renderCategoryFilter();
     this.renderGrid();
     this.bindEvents();
-    this.setUserNameFromSession();
   }
 
   debounce(fn, delay = 250) {
@@ -503,19 +502,6 @@ class CatalogPage {
 
   updateProductStatus(product) {
     product.status = product.stock > 0 ? "Available" : "Out of Stock";
-  }
-
-  setUserNameFromSession() {
-    try {
-      const sessionRaw =
-        localStorage.getItem("posSession") ||
-        sessionStorage.getItem("posSession");
-      if (sessionRaw) {
-        const session = JSON.parse(sessionRaw);
-        const nameEl = document.getElementById("userName");
-        if (nameEl && session.fullName) nameEl.textContent = session.fullName;
-      }
-    } catch (_) {}
   }
 
   updateDateTime() {

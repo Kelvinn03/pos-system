@@ -1,159 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - POS System</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <script>
-        const urlAuthDisabled = new URLSearchParams(window.location.search).get('authDisabled') === 'true';
-        const authDisabled = (window.AUTH_DISABLED === true) || (localStorage.getItem('authDisabled') === 'true') || urlAuthDisabled;
-        if (!authDisabled) {
-            const session = localStorage.getItem('posSession') || sessionStorage.getItem('posSession');
-            if (!session) {
-                window.location.href = 'login.html';
-            }
-        }
-    </script>
-
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="dashboard-container">
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <h2><i class="fas fa-cash-register"></i> POS System</h2>
+      <nav id="sidebar" class="sidebar"></nav>
+
+      <main class="main-content">
+        <header class="main-header">
+          <div class="header-left">
+            <h1>Dashboard</h1>
+            <p>Ringkasan data penjualan dan aktivitas terbaru</p>
+          </div>
+          <div class="header-right">
+            <div class="date-time" id="dateTime"></div>
+          </div>
+        </header>
+
+        <section class="summary-cards" aria-label="Ringkasan KPI">
+          <div class="summary-card">
+            <div class="summary-label">Total Pendapatan</div>
+            <div class="summary-value" id="kpiTotalRevenue">Rp 0</div>
+            <div class="summary-change" id="kpiRevenueChange">&nbsp;</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">Total Transaksi</div>
+            <div class="summary-value" id="kpiTotalTransactions">0</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">Rata-rata/Transaksi</div>
+            <div class="summary-value" id="kpiAvgPerTransaction">Rp 0</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">Produk Terjual</div>
+            <div class="summary-value" id="kpiItemsSold">0</div>
+          </div>
+        </section>
+
+        <section class="analytics-section">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Tren Penjualan</h3>
+              <div class="chart-controls">
+                <button class="chart-btn active">Hari</button>
+                <button class="chart-btn">Minggu</button>
+                <button class="chart-btn">Bulan</button>
+              </div>
             </div>
-            
-            <ul class="sidebar-menu">
-                <li class="menu-item active">
-                    <a href="dashboard.html">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="pos.html">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span>Kasir / POS</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="products.html">
-                        <i class="fas fa-box"></i>
-                        <span>Produk & Katalog</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="contact.html">
-                        <i class="fas fa-envelope"></i>
-                        <span>Contact Us</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="support.html">
-                        <i class="fas fa-life-ring"></i>
-                        <span>Support Center</span>
-                    </a>
-                </li>
-            </ul>
-            
-            <div class="sidebar-footer">
-                <div class="user-info">
-                    <div class="user-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-details">
-                        <span class="user-name" id="userName">John Doe</span>
-                        <span class="user-role">Admin</span>
-                    </div>
-                </div>
-                <button class="logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Logout
-                </button>
+            <canvas id="salesChart" style="width: 100%; height: 280px"></canvas>
+          </div>
+
+          <div class="top-products">
+            <div class="top-products-header">
+              <h3>Top Penjualan</h3>
             </div>
-        </nav>
+            <div class="top-products-list" id="topProductsList"></div>
+          </div>
+        </section>
 
-        <main class="main-content">
-            <header class="main-header">
-                <div class="header-left">
-                    <h1>Dashboard</h1>
-                    <p>Ringkasan data penjualan dan aktivitas terbaru</p>
-                </div>
-                <div class="header-right">
-                    <div class="date-time" id="dateTime"></div>
-                </div>
-            </header>
-
-            <section class="summary-cards" aria-label="Ringkasan KPI">
-                <div class="summary-card">
-                    <div class="summary-label">Total Pendapatan</div>
-                    <div class="summary-value" id="kpiTotalRevenue">Rp 0</div>
-                    <div class="summary-change" id="kpiRevenueChange">&nbsp;</div>
-                </div>
-                <div class="summary-card">
-                    <div class="summary-label">Total Transaksi</div>
-                    <div class="summary-value" id="kpiTotalTransactions">0</div>
-                </div>
-                <div class="summary-card">
-                    <div class="summary-label">Rata-rata/Transaksi</div>
-                    <div class="summary-value" id="kpiAvgPerTransaction">Rp 0</div>
-                </div>
-                <div class="summary-card">
-                    <div class="summary-label">Produk Terjual</div>
-                    <div class="summary-value" id="kpiItemsSold">0</div>
-                </div>
-            </section>
-
-            <section class="analytics-section">
-                <div class="chart-container">
-                    <div class="chart-header">
-                        <h3>Tren Penjualan</h3>
-                        <div class="chart-controls">
-                            <button class="chart-btn active">Hari</button>
-                            <button class="chart-btn">Minggu</button>
-                            <button class="chart-btn">Bulan</button>
-                        </div>
-                    </div>
-                    <canvas id="salesChart" style="width:100%; height:280px"></canvas>
-                </div>
-
-                <div class="top-products">
-                    <div class="top-products-header">
-                        <h3>Top Penjualan</h3>
-                    </div>
-                    <div class="top-products-list" id="topProductsList">
-                    </div>
-                </div>
-            </section>
-
-            <section class="recent-transactions">
-                <div class="section-header">
-                    <h3>Transaksi Terakhir</h3>
-                </div>
-                <div class="transactions-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Pelanggan</th>
-                                <th>Item</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Tanggal</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recentTransactionsBody">
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-        </main>
+        <section class="recent-transactions">
+          <div class="section-header">
+            <h3>Transaksi Terakhir</h3>
+          </div>
+          <div class="transactions-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Pelanggan</th>
+                  <th>Item</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                </tr>
+              </thead>
+              <tbody id="recentTransactionsBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
     </div>
 
-    <script src="auth.js"></script>
-    <script src="dashboard.js"></script>
-</body>
+    <script src="/auth.js"></script>
+    <script src="/dashboard.js"></script>
+    <script src="/layout.js"></script>
+  </body>
 </html>

@@ -5,19 +5,7 @@ class ContactPage {
     }
 
     init() {
-        this.loadUserInfo();
         this.setupEventListeners();
-    }
-
-    loadUserInfo() {
-        const session = localStorage.getItem('posSession') || sessionStorage.getItem('posSession');
-        if (session) {
-            const userData = JSON.parse(session);
-            const userNameElement = document.getElementById('userName');
-            if (userNameElement) {
-                userNameElement.textContent = userData.fullName || 'User';
-            }
-        }
     }
 
     setupEventListeners() {
