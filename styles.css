@@ -1786,6 +1786,93 @@ body {
     border-left: 3px solid transparent;
 }
 
+/* Sidebar submenu for POS */
+.menu-item.parent { position: relative; }
+.submenu {
+    list-style: none;
+    margin: 8px 0 0 0;
+    padding: 6px 0 6px 14px;
+    display: block;
+}
+.submenu-item { margin-bottom: 6px; }
+.submenu-item a { color: #475569; font-size: 0.95rem; padding: 6px 10px; display: block; border-radius: 8px; }
+.submenu-item a:hover { background: rgba(103,114,239,0.06); color: #334155; }
+.submenu-item.active a { background: #667eea; color: #fff; }
+.menu-item.parent > a.parent-link { cursor: default; }
+
+/* History page: search and period filter styles */
+.transactions-table .search-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.transactions-table #historySearch {
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 28px;
+    width: 420px; /* larger by default */
+    max-width: 68%;
+    box-shadow: 0 8px 22px rgba(103,114,239,0.06);
+}
+.transactions-table #historySearch:focus {
+    outline: none;
+    border-color: #667eea;
+}
+.top-products .card-inner select#historyPeriod {
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 8px 34px 8px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236676ea'><path d='M5.25 7.5l4.5 4.5 4.5-4.5' stroke='%236676ea' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>") no-repeat right 10px center;
+    background-size: 14px 14px;
+}
+
+@media (max-width: 900px) {
+    .transactions-table #historySearch { width: 100%; max-width: 100%; }
+    .top-products .card-inner select#historyPeriod { width: 100%; }
+}
+
+/* Action button styles in history table */
+.transactions-table a.action-refund {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: linear-gradient(135deg,#48bb78,#38a169);
+    color: #fff !important;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(56,161,105,0.12);
+}
+.transactions-table a.action-refund:hover,
+.transactions-table a.action-refund:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 30px rgba(56,161,105,0.18);
+}
+
+/* Narrow action column and center actions */
+.transactions-table td:last-child { text-align: center; white-space: nowrap; }
+
+/* Sorting indicators */
+.transactions-table thead th { position: relative; }
+.transactions-table thead th.sorted-asc::after,
+.transactions-table thead th.sorted-desc::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+}
+.transactions-table thead th.sorted-asc::after { border-bottom: 8px solid #667eea; }
+.transactions-table thead th.sorted-desc::after { border-top: 8px solid #667eea; }
+
 .menu-item a:hover,
 .menu-item.active a {
     background: #edf2f7;
