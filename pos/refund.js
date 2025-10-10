@@ -42,9 +42,13 @@ class RefundSystem {
       "searchTransactionBtn"
     );
     if (searchTransactionBtn) {
-      searchTransactionBtn.addEventListener("click", () =>
-        this.searchTransaction()
-      );
+      // ensure button doesn't behave like a submit
+      try { searchTransactionBtn.type = 'button'; } catch (e) {}
+      searchTransactionBtn.addEventListener("click", (e) => {
+        console.debug('searchTransactionBtn clicked');
+        this.searchTransaction();
+      });
+      console.debug('searchTransactionBtn listener attached');
     }
 
     const transactionSearch = document.getElementById("transactionSearch");
@@ -126,9 +130,9 @@ class RefundSystem {
   }
 
   searchTransaction() {
-    const searchTerm = document
-      .getElementById("transactionSearch")
-      .value.trim();
+    const inputEl = document.getElementById("transactionSearch");
+    const searchTerm = inputEl ? inputEl.value.trim() : "";
+    console.debug('searchTransaction called, term=', searchTerm, 'inputEl=', !!inputEl);
     if (!searchTerm) {
       this.showMessage(
         "Silakan masukkan ID transaksi atau nama pelanggan",
@@ -136,18 +140,23 @@ class RefundSystem {
       );
       return;
     }
-
     const transactions = JSON.parse(
       localStorage.getItem("posTransactions") || "[]"
     );
-    const results = transactions.filter(
-      (t) =>
-        t.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        t.items.some((item) =>
-          item.name.toLowerCase().includes(searchTerm.toLowerCase())
-        ) ||
-        (t.customerName &&
-          t.customerName.toLowerCase().includes(searchTerm.toLowerCase()))
+    const term = searchTerm.toLowerCase();
+
+    // Be defensive: transactions or their fields might be missing/undefined.
+    const results = (Array.isArray(transactions) ? transactions : []).filter(
+      (t) => {
+        if (!t) return false;
+        const idMatch = t.id && String(t.id).toLowerCase().includes(term);
+        const customerMatch =
+          t.customerName && String(t.customerName).toLowerCase().includes(term);
+        const itemsMatch =
+          Array.isArray(t.items) &&
+          t.items.some((item) => item && item.name && String(item.name).toLowerCase().includes(term));
+        return idMatch || customerMatch || itemsMatch;
+      }
     );
 
     this.displayTransactionResults(results);
@@ -267,7 +276,7 @@ class RefundSystem {
                             )} x ${item.quantity} = ${this.formatCurrency(
                       item.price * item.quantity
                     )}</p>
-                            <p class="item-category">${item.category}</p>
+                            <p class="item-category">${item.category ? item.category : ''}</p>
                         </div>
                         <div class="refund-item-controls">
                             <div class="refund-checkbox-container">
@@ -376,48 +385,38 @@ class RefundSystem {
             <div class="refund-confirmation-details">
                 <div class="confirmation-section">
                     <h4>Detail Transaksi Asli</h4>
-                    <p><strong>ID Transaksi:</strong> ${
-                      this.selectedTransaction.id
-                    }</p>
-                    <p><strong>Tanggal:</strong> ${this.formatDate(
-                      this.selectedTransaction.date
-                    )}</p>
-                    <p><strong>Total Asli:</strong> ${this.formatCurrency(
-                      this.selectedTransaction.total
-                    )}</p>
+                    <p><strong>ID Transaksi:</strong> ${this.selectedTransaction.id}</p>
+                    <p><strong>Tanggal:</strong> ${this.formatDate(this.selectedTransaction.date)}</p>
+                    <p><strong>Total Asli:</strong> ${this.formatCurrency(this.selectedTransaction.total)}</p>
                 </div>
-                
+
                 <div class="confirmation-section">
                     <h4>Item yang akan di-refund</h4>
-                    <div class="refund-items-confirmation">
+                    <div class="refund-items-card">
                         ${refundItems
                           .map(
                             (item) => `
-                            <div class="refund-item-confirmation">
-                                <div class="item-info">
-                                    <span class="item-name">${item.name}</span>
-                                    <span class="item-amount">${this.formatCurrency(
-                                      item.refundAmount
-                                    )}</span>
+                            <div class="item-row">
+                                <div class="item-left">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-meta">${this.formatCurrency(item.price)} x ${item.quantity}</div>
                                 </div>
-                                <div class="item-reason">
-                                    <small>Alasan: ${this.getRefundReasonText(
-                                      item.reason
-                                    )}</small>
+                                <div class="item-right">
+                                    <div class="item-amount">${this.formatCurrency(item.refundAmount)}</div>
+                                    <div class="item-reason small">${this.getRefundReasonText(item.reason)}</div>
                                 </div>
                             </div>
                         `
                           )
                           .join("")}
+
+                        <div class="refund-total-row">
+                            <div class="total-label">Total Refund</div>
+                            <div class="total-amount">${this.formatCurrency(this.refundTotal)}</div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="confirmation-section refund-total-section">
-                    <h4>Total Refund: ${this.formatCurrency(
-                      this.refundTotal
-                    )}</h4>
-                </div>
-                
+
                 <div class="confirmation-warning">
                     <i class="fas fa-exclamation-triangle"></i>
                     <p>Pastikan semua informasi sudah benar. Refund yang sudah diproses tidak dapat dibatalkan.</p>
@@ -576,7 +575,7 @@ class RefundSystem {
     const recentRefundsList = document.getElementById("recentRefundsList");
     if (!recentRefundsList) return;
 
-    if (recentRefunds.length === 0) {
+    if (refunds.length === 0) {
       recentRefundsList.innerHTML = `
                 <div class="no-recent-refunds">
                     <i class="fas fa-clipboard-list"></i>
@@ -586,7 +585,7 @@ class RefundSystem {
       return;
     }
 
-    recentRefundsList.innerHTML = recentRefunds
+    recentRefundsList.innerHTML = refunds
       .map(
         (refund) => `
             <div class="recent-refund-card">
@@ -784,6 +783,41 @@ class RefundSystem {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function bootRefundSystem() {
   window.refundSystem = new RefundSystem();
-});
+
+  // If a transaction id is present in query string or saved as last transaction, auto-select it
+  try {
+  const params = new URLSearchParams(window.location.search);
+  // Only auto-search/select when a trx parameter is explicitly provided in the URL.
+  // Do NOT fall back to localStorage here — otherwise the page shows results by default.
+  const trx = params.get('trx');
+  if (trx) {
+      // delay slightly to ensure RefundSystem instance has finished setup
+      setTimeout(() => {
+        try {
+          // prefill search input so user sees the trx
+          const inputEl = document.getElementById('transactionSearch');
+          if (inputEl) inputEl.value = trx;
+        } catch(e){}
+        if (window.refundSystem) {
+          // call search first so results render in the left column, then select if desired
+          try { window.refundSystem.searchTransaction(); } catch(e) { console.warn('searchTransaction failed', e); }
+          // If a direct select is preferred, uncomment the following line
+          // window.refundSystem.selectTransaction(trx);
+          // also ensure left column visible
+          const chart = document.querySelector('.chart-container');
+          chart && chart.classList.remove('empty');
+        }
+      }, 150);
+    }
+  } catch (e) {
+    console.warn('Auto-select trx failed', e);
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootRefundSystem);
+} else {
+  bootRefundSystem();
+}

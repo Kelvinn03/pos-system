@@ -222,10 +222,28 @@
           <button class="action-button" id="returnToPosBtn">
             <i class="fas fa-cash-register"></i> Kembali
           </button>
+          <button class="action-button" id="refundLastBtn">
+            <i class="fas fa-undo"></i> Refund Transaksi Ini
+          </button>
         </div>
       </div>
     </div>
 
     <script src="/pos/payment-success.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const refundBtn = document.getElementById('refundLastBtn');
+        if (!refundBtn) return;
+
+        refundBtn.addEventListener('click', function() {
+          const lastId = localStorage.getItem('posLastTransactionId');
+          if (lastId) {
+            window.location.href = `/pos/refund.html?trx=${encodeURIComponent(lastId)}`;
+          } else {
+            alert('Tidak ada transaksi terakhir yang ditemukan untuk direfund.');
+          }
+        });
+      });
+    </script>
   </body>
 </html>
