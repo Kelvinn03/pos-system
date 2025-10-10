@@ -1,7 +1,7 @@
 // Authentication System JavaScript
 class AuthSystem {
     constructor() {
-        this.currentStep = 'email'; // email, question, answer, newPassword
+        this.currentStep = 'email';
         this.userData = null;
         this.init();
     }
@@ -9,33 +9,69 @@ class AuthSystem {
     init() {
         this.setupEventListeners();
         this.loadStoredUsers();
+        this.ensureDemoUser();
+    }
+
+    ensureDemoUser() {
+        if (this.users.length === 0) {
+            this.users.push({
+                id: 1,
+                fullName: 'Demo User',
+                email: 'demo@possystem.com',
+                birthDate: '1990-01-01',
+                password: 'demo123',
+                securityQuestion: 'color',
+                securityAnswer: 'blue',
+                createdAt: new Date().toISOString()
+            });
+            this.saveUsers();
+        }
     }
 
     setupEventListeners() {
-        // Login form
         const loginForm = document.getElementById('loginForm');
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => this.handleLogin(e));
         }
 
-        // Register form
         const registerForm = document.getElementById('registerForm');
         if (registerForm) {
             registerForm.addEventListener('submit', (e) => this.handleRegister(e));
             this.setupPasswordValidation();
         }
 
-        // Forgot password form
         const forgotForm = document.getElementById('forgotPasswordForm');
         if (forgotForm) {
             forgotForm.addEventListener('submit', (e) => this.handleForgotPassword(e));
         }
 
-        // Password strength indicator
         const passwordInput = document.getElementById('password');
         if (passwordInput) {
             passwordInput.addEventListener('input', () => this.checkPasswordStrength());
         }
+
+        this.setupPasswordToggles();
+    }
+
+    setupPasswordToggles() {
+        const toggleButtons = document.querySelectorAll('.toggle-password');
+        toggleButtons.forEach(button => {
+            button.style.display = 'flex';
+            button.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const icon = this.querySelector('i');
+                
+                if (input && input.tagName === 'INPUT') {
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.className = 'fas fa-eye-slash';
+                    } else {
+                        input.type = 'password';
+                        icon.className = 'fas fa-eye';
+                    }
+                }
+            });
+        });
     }
 
     loadStoredUsers() {
@@ -52,14 +88,13 @@ class AuthSystem {
         const formData = new FormData(e.target);
         const email = formData.get('email');
         const password = formData.get('password');
-        const rememberMe = document.getElementById('rememberMe').checked;
+        const rememberMe = document.getElementById('rememberMe')?.checked || false;
 
         const user = this.users.find(u => 
             (u.email === email || u.username === email) && u.password === password
         );
 
         if (user) {
-            // Store session
             const sessionData = {
                 userId: user.id,
                 email: user.email,
@@ -98,18 +133,15 @@ class AuthSystem {
             agreeTerms: document.getElementById('agreeTerms').checked
         };
 
-        // Validation
         if (!this.validateRegistration(userData)) {
             return;
         }
 
-        // Check if user already exists
         if (this.users.find(u => u.email === userData.email)) {
             this.showMessage('Email sudah terdaftar!', 'error');
             return;
         }
 
-        // Add user
         this.users.push({
             id: userData.id,
             fullName: userData.fullName,
@@ -130,26 +162,22 @@ class AuthSystem {
     }
 
     validateRegistration(userData) {
-        // Check required fields
         if (!userData.fullName || !userData.email || !userData.password || 
             !userData.securityQuestion || !userData.securityAnswer) {
             this.showMessage('Semua field harus diisi!', 'error');
             return false;
         }
 
-        // Check password match
         if (userData.password !== userData.confirmPassword) {
             this.showMessage('Password dan konfirmasi password tidak cocok!', 'error');
             return false;
         }
 
-        // Check password strength
         if (!this.isPasswordStrong(userData.password)) {
             this.showMessage('Password harus minimal 8 karakter dengan kombinasi huruf, angka, dan simbol!', 'error');
             return false;
         }
 
-        // Check terms agreement
         if (!userData.agreeTerms) {
             this.showMessage('Anda harus menyetujui syarat dan ketentuan!', 'error');
             return false;
@@ -192,7 +220,6 @@ class AuthSystem {
                 return;
             }
 
-            // Update password
             const userIndex = this.users.findIndex(u => u.id === this.userData.id);
             if (userIndex !== -1) {
                 this.users[userIndex].password = newPassword;
@@ -287,7 +314,6 @@ class AuthSystem {
     }
 
     showMessage(message, type) {
-        // Remove existing messages
         const existingMessage = document.querySelector('.auth-message');
         if (existingMessage) {
             existingMessage.remove();
@@ -303,7 +329,6 @@ class AuthSystem {
         const form = document.querySelector('.auth-form');
         form.insertBefore(messageDiv, form.firstChild);
 
-        // Auto remove after 5 seconds
         setTimeout(() => {
             if (messageDiv.parentNode) {
                 messageDiv.remove();
@@ -312,7 +337,6 @@ class AuthSystem {
     }
 }
 
-// Utility functions
 function togglePassword(inputId) {
     const input = document.getElementById(inputId);
     const button = input.nextElementSibling;
@@ -327,17 +351,15 @@ function togglePassword(inputId) {
     }
 }
 
-// Initialize authentication system
 document.addEventListener('DOMContentLoaded', () => {
     window.authSystem = new AuthSystem();
 });
 
-// Check if user is already logged in
 function checkAuth() {
     const urlAuthDisabled = new URLSearchParams(window.location.search).get('authDisabled') === 'true';
     const authDisabled = (window.AUTH_DISABLED === true) || (localStorage.getItem('authDisabled') === 'true') || urlAuthDisabled;
     if (authDisabled) {
-        return; // Skip auth redirects when disabled
+        return;
     }
     const session = localStorage.getItem('posSession') || sessionStorage.getItem('posSession');
     if (session && window.location.pathname.includes('login.html')) {
@@ -349,12 +371,10 @@ function checkAuth() {
     }
 }
 
-// Logout function
 function logout() {
     localStorage.removeItem('posSession');
     sessionStorage.removeItem('posSession');
     window.location.href = '/login.html';
 }
 
-// Check authentication on page load
 document.addEventListener('DOMContentLoaded', checkAuth);
