@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>History Pembelian - POS System</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <nav id="sidebar" class="sidebar"></nav>
+      <main class="main-content">
+        <header class="main-header">
+          <div class="header-left">
+            <h1>History Pembelian</h1>
+            <p>Daftar transaksi pembelian / penjualan sebelumnya</p>
+          </div>
+          <div class="header-right">
+            <div class="date-time" id="dateTime"></div>
+          </div>
+        </header>
+
+        <section class="analytics-section">
+          <div class="chart-container">
+            <div class="card-inner">
+              <div class="section-header">
+                <h3>Riwayat Transaksi</h3>
+                <div>
+                  <input type="text" id="historySearch" placeholder="Cari ID transaksi / pelanggan..." />
+                </div>
+              </div>
+
+              <div class="transactions-table">
+                <table>
+                  <thead>
+                    <tr>
+                        <th data-key="id">ID Transaksi</th>
+                        <th data-key="timestamp">Tanggal</th>
+                        <th data-key="customerName">Pelanggan</th>
+                        <th data-key="items">Jumlah Item</th>
+                        <th data-key="total">Total</th>
+                        <th data-key="actions">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="historyBody">
+                    <!-- rows populated by /pos/history.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="top-products">
+            <div class="card-inner">
+              <div class="top-products-header">
+                <h3>Filter</h3>
+              </div>
+              <div>
+                <label>Periode:</label>
+                <select id="historyPeriod">
+                  <option value="7">7 hari terakhir</option>
+                  <option value="30">30 hari terakhir</option>
+                  <option value="365">1 tahun</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/auth.js" defer></script>
+    <script src="/layout.js" defer></script>
+    <script src="/pos/history.js" defer></script>
+  </body>
+</html>

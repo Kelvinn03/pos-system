@@ -24,11 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
                   <span>Dashboard</span>
               </a>
           </li>
-          <li class="menu-item ${currentUrl === "/pos/pos.html" ? "active" : ""}">
-              <a href="/pos/pos.html">
+          <li class="menu-item ${currentUrl.startsWith('/pos/') ? 'parent' : ''}">
+              <a href="#" class="parent-link">
                   <i class="fas fa-shopping-cart"></i>
                   <span>Kasir / POS</span>
               </a>
+              <ul class="submenu">
+                  <li class="submenu-item ${currentUrl === '/pos/pos.html' ? 'active' : ''}"><a href="/pos/pos.html">Jual &amp; Bayar</a></li>
+                  <li class="submenu-item ${currentUrl === '/pos/refund.html' ? 'active' : ''}"><a href="/pos/refund.html">Refund</a></li>
+                  <li class="submenu-item ${currentUrl === '/pos/history.html' ? 'active' : ''}"><a href="/pos/history.html">History Pembelian</a></li>
+              </ul>
           </li>
           <li class="menu-item ${
             currentUrl === "/products.html" ? "active" : ""
